@@ -1,21 +1,20 @@
 ---
 - name: set up vim just the way I like it
-  hosts: localhost
   tasks:
 
     - name: copy .vimrc to home folder
       copy:
         src: .vimrc
-        dest: /home/adam/.vimrc
+        dest: "/home/{{ username }}/.vimrc"
 
     - name:
       file:
         path: "{{ item }}"
         state: directory
       loop:
-        - /home/adam/.vim
-        - /home/adam/.vim/autoload
-        - /home/adam/.vim/bundle
+        - "/home/{{ username }}/.vim"
+        - "/home/{{ username }}/.vim/autoload"
+        - "/home/{{ username }}/.vim/bundle"
 
     - name: install pathogen
       command: "curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
@@ -23,14 +22,14 @@
     - name: install vim-sensible
       git:
         repo: https://github.com/tpope/vim-sensible.git
-        dest: /home/adam/.vim/bundle/vim-sensible
+        dest: "/home/{{ username }}/.vim/bundle/vim-sensible"
 
     - name: install vim-javascript
       git:
         repo: https://github.com/pangloss/vim-javascript.git
-        dest: /home/adam/.vim/bundle/vim-javascript
+        dest: "/home/{{ username }}/.vim/bundle/vim-javascript"
       
     - name: install vim-jsx
       git:
         repo: https://github.com/mxw/vim-jsx.git
-        dest: /home/adam/.vim/bundle/vim-jsx
+        dest: "/home/{{ username }}/.vim/bundle/vim-jsx"
