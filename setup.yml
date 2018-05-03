@@ -1,5 +1,6 @@
 ---
 - name: set up vim just the way I like it
+  hosts: localhost
   tasks:
 
     - name: copy .vimrc to home folder
