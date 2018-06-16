@@ -1,0 +1,6 @@
+[alias]
+        adog = log --all --decorate --oneline --graph
+[push]
+	default = current
+[user]
+	name = Adam Pickering
