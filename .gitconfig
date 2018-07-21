@@ -1,4 +1,6 @@
 [alias]
+        s = status
+        d = diff
         adog = log --all --decorate --oneline --graph
 [push]
 	default = current
