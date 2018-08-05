@@ -3,6 +3,8 @@
 [alias]
         s = status
         d = diff
+        a = add
+        c = commit
         adog = log --all --decorate --oneline --graph
 [push]
 	default = current
