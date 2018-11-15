@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 #--------------------------------------------------------------------------------
@@ -41,8 +41,8 @@ cp .vimrc ~/.vimrc
 cp .gitconfig ~/.gitconfig
 read -p "Enter full name for git: " git_name
 read -p "Enter email for git: " git_email
-echo "\tname = $git_name" >> ~/.gitconfig
-echo "\temail = $git_email" >> ~/.gitconfig
+echo -e "\tname = $git_name" >> ~/.gitconfig
+echo -e "\temail = $git_email" >> ~/.gitconfig
 
 
 #--------------------------------------------------------------------------------

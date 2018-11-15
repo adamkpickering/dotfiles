@@ -8,4 +8,6 @@
         adog = log --all --decorate --oneline --graph
 [push]
 	default = current
+[color]
+        ui = auto
 [user]
