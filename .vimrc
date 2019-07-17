@@ -6,6 +6,7 @@ set scrolloff=999
 
 autocmd FileType javascript.jsx setlocal shiftwidth=2 tabstop=2
 autocmd FileType python setlocal shiftwidth=4 tabstop=4
+autocmd FileType sh setlocal shiftwidth=4 tabstop=4
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
