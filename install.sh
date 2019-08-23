@@ -61,7 +61,6 @@ read -p "Enter email for git: " GIT_EMAIL
 cat << EOF > ~/.gitconfig
 [core]
   editor = vim
-  pager = more
 [alias]
   s = status
   d = diff
