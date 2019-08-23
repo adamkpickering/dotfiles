@@ -32,17 +32,32 @@
 #echo " done"
 #
 #cp .vimrc ~/.vimrc
-#
-#
-##--------------------------------------------------------------------------------
-## git
-##--------------------------------------------------------------------------------
-#
-#cp .gitconfig ~/.gitconfig
-#read -p "Enter full name for git: " git_name
-#read -p "Enter email for git: " git_email
-#echo -e "\tname = $git_name" >> ~/.gitconfig
-#echo -e "\temail = $git_email" >> ~/.gitconfig
+
+
+#--------------------------------------------------------------------------------
+# git
+#--------------------------------------------------------------------------------
+
+read -p "Enter full name for git: " GIT_NAME
+read -p "Enter email for git: " GIT_EMAIL
+cat << EOF > ~/.gitconfig
+[core]
+  editor = vim
+  pager = more
+[alias]
+  s = status
+  d = diff
+  a = add
+  c = commit
+  adog = log --all --decorate --oneline --graph
+[push]
+  default = current
+[color]
+  ui = auto
+[user]
+  name = $GIT_NAME
+  email = $GIT_EMAIL
+EOF
 
 
 #--------------------------------------------------------------------------------
