@@ -1,5 +1,13 @@
 #!/bin/sh
 
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo 'Usage: ./install.sh <full_name> <email>'
+  exit
+else
+  GIT_NAME="$1"
+  GIT_EMAIL="$2"
+fi
+
 
 #--------------------------------------------------------------------------------
 # vim
@@ -56,8 +64,6 @@ EOF
 # git
 #--------------------------------------------------------------------------------
 
-read -p "Enter full name for git: " GIT_NAME
-read -p "Enter email for git: " GIT_EMAIL
 cat << EOF > ~/.gitconfig
 [core]
   editor = vim
@@ -84,4 +90,40 @@ EOF
 cat << EOF > ~/.tmux.conf
 set-window-option -g mode-keys vi
 EOF
-#cp .tmux.conf ~/.tmux.conf
+
+
+#--------------------------------------------------------------------------------
+# bash
+#--------------------------------------------------------------------------------
+
+cat << 'EOF' > ~/.bashrc
+umask 022
+
+# the bash history should save 3000 commands
+export HISTFILESIZE=3000
+# don't put duplicate lines in the history
+export HISTCONTROL=ignoredups
+export PS1='\[\e]0;\w\a\]\[\e[36m\]\u@\h \[\e[33m\][\w]\[\e[0m\]\$ '
+export EDITOR=/bin/vim
+export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/bin:~/.local/bin:.
+# not sure if this is needed
+#export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
+
+h() {
+  if [ -n "$1" ]; then
+    history | grep $1
+  else
+    history | head -n 30
+  fi
+}
+
+dsh() {
+  if [ -n "$1" ]; then
+    docker exec -it $1 /bin/bash ||
+    docker exec -it $1 /bin/sh ||
+    echo "Container $1 does not exist"
+  else
+    echo "You'll need to enter the name of a docker container"
+  fi
+}
+EOF
