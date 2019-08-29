@@ -103,6 +103,9 @@ umask 022
 export HISTFILESIZE=3000
 # don't put duplicate lines in the history
 export HISTCONTROL=ignoredups
+# append to the history file, don't overwrite it
+shopt -s histappend
+
 export PS1='\[\e]0;\w\a\]\[\e[36m\]\u@\h \[\e[33m\][\w]\[\e[0m\]\$ '
 export EDITOR=/bin/vim
 export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/bin:~/.local/bin:.
