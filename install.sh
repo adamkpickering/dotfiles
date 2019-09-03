@@ -89,7 +89,6 @@ EOF
 
 cat << EOF > ~/.tmux.conf
 set-window-option -g mode-keys vi
-set -g default-terminal "screen-256color"
 EOF
 
 
@@ -109,6 +108,8 @@ shopt -s histappend
 
 export PS1='\[\e]0;\w\a\]\[\e[36m\]\u@\h \[\e[33m\][\w]\[\e[0m\]\$ '
 export EDITOR=/bin/vim
+# makes sure that highlighting works in vim when in tmux session
+export TERM=xterm-256color
 export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/bin:~/.local/bin:.
 # not sure if this is needed
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
