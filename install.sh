@@ -89,6 +89,7 @@ EOF
 
 cat << EOF > ~/.tmux.conf
 set-window-option -g mode-keys vi
+set -g default-terminal "screen-256color"
 EOF
 
 
