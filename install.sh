@@ -45,7 +45,8 @@ color elflord
 set expandtab
 set number
 set scrolloff=999
-set backupcopy=yes # other settings will mess with crontab -e
+" other settings will mess with crontab -e
+set backupcopy=yes
 
 autocmd FileType javascript.jsx setlocal shiftwidth=2 tabstop=2
 autocmd FileType json           setlocal shiftwidth=2 tabstop=2
