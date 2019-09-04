@@ -1,7 +1,4 @@
-# Installation
-
 ```
 git clone https://github.com/adamkpickering/dotfiles.git
-cd dotfiles
-./install.sh
+. dotfiles/install.sh <your_full_name> <your_email>
 ```
