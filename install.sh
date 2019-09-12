@@ -116,15 +116,15 @@ export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/
 # not sure if this is needed
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
 
-h() {
+h() (
   if [ -n "$1" ]; then
     history | grep $1
   else
     history | head -n 30
   fi
-}
+)
 
-dsh() {
+dsh() (
   if [ -n "$1" ]; then
     docker exec -it $1 /bin/bash ||
     docker exec -it $1 /bin/sh ||
@@ -132,5 +132,5 @@ dsh() {
   else
     echo "You'll need to enter the name of a docker container"
   fi
-}
+)
 EOF
