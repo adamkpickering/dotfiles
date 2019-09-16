@@ -118,9 +118,9 @@ export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/
 
 h() (
   if [ -n "$1" ]; then
-    history | grep $1
+    history | grep "$1"
   else
-    history | head -n 30
+    history | tail -n 30
   fi
 )
 
