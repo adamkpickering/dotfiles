@@ -133,4 +133,12 @@ dsh() (
     echo "You'll need to enter the name of a docker container"
   fi
 )
+
+dkill() (
+  if [ -n "$1" ]; then
+    docker container stop $1 && docker container rm $1
+  else
+    echo "You'll need to enter the name of a docker container"
+  fi
+)
 EOF
