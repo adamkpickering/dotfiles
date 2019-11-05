@@ -100,6 +100,7 @@ EOF
 
 cat << 'EOF' > ~/.bashrc
 umask 022
+cd ~
 
 # the bash history should save 3000 commands
 export HISTFILESIZE=3000
