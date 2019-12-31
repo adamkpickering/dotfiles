@@ -132,12 +132,18 @@ h() (
 )
 
 dsh() (
-  if [ -n "$1" ]; then
+  if [ -z "$1" ]; then
+    printf "usage: dsh <container_name>\n"
+    exit 1
+  fi
+  if [ -n "$SSH_AUTH_SOCK" ]; then
+    docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} $1 /bin/bash ||
+    docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} $1 /bin/sh ||
+    printf "Container $1 does not exist\n"
+  else
     docker exec -it $1 /bin/bash ||
     docker exec -it $1 /bin/sh ||
-    echo "Container $1 does not exist"
-  else
-    echo "You'll need to enter the name of a docker container"
+    printf "Container $1 does not exist\n"
   fi
 )
 
@@ -145,7 +151,7 @@ dkill() (
   if [ -n "$1" ]; then
     docker container stop $1 && docker container rm $1
   else
-    echo "You'll need to enter the name of a docker container"
+    printf "usage: dkill <container_name>\n"
   fi
 )
 EOF
