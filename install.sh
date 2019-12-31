@@ -98,6 +98,8 @@ EOF
 # bash
 #--------------------------------------------------------------------------------
 
+
+
 cat << 'EOF' > ~/.bashrc
 umask 022
 cd ~
@@ -109,6 +111,8 @@ export HISTCONTROL=ignoredups
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:'
+
 export PS1='\[\e]0;\w\a\]\[\e[36m\]\u@\h \[\e[33m\][\w]\[\e[0m\]\$ '
 export EDITOR=vim
 # makes sure that highlighting works in vim when in tmux session
@@ -116,6 +120,8 @@ export TERM=xterm-256color
 export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/bin:~/.local/bin:.
 # not sure if this is needed
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
+
+alias ls='ls --color'
 
 h() (
   if [ -n "$1" ]; then
