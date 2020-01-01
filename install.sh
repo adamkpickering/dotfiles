@@ -64,6 +64,7 @@ autocmd FileType python         setlocal shiftwidth=4 tabstop=4 expandtab
 autocmd FileType sh             setlocal shiftwidth=4 tabstop=4 noexpandtab
 autocmd FileType css            setlocal shiftwidth=4 tabstop=4 noexpandtab
 autocmd FileType sshconfig      setlocal shiftwidth=4 tabstop=4 noexpandtab
+autocmd FileType go             setlocal shiftwidth=4 tabstop=4 noexpandtab
 
 execute pathogen#infect()
 filetype plugin indent on
