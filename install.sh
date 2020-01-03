@@ -133,34 +133,43 @@ export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/
 alias ls='ls --color'
 
 h() (
-  if [ -n "$1" ]; then
-    history | grep "$1"
-  else
-    history | tail -n 30
-  fi
+	if [ -n "$1" ]; then
+		history | grep "$1"
+	else
+		history | tail -n 30
+	fi
 )
 
 dsh() (
-  if [ -z "$1" ]; then
-    printf "usage: dsh <container_name>\n"
-    exit 1
-  fi
-  if [ -n "$SSH_AUTH_SOCK" ]; then
-    docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} $1 /bin/bash ||
-    docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} $1 /bin/sh ||
-    printf "Container $1 does not exist\n"
-  else
-    docker exec -it $1 /bin/bash ||
-    docker exec -it $1 /bin/sh ||
-    printf "Container $1 does not exist\n"
-  fi
+	if [ -z "$1" ]; then
+		printf "usage: dsh <container_name>\n"
+		exit 1
+	fi
+	if ! docker container inspect "$1" 2&>> /dev/null; then
+		printf "dsh: container %s does not exist\n" "$1"
+	fi
+	if [ -n "$SSH_AUTH_SOCK" ]; then
+		USE_SHELL=$(docker exec adam-kops sed -n 's/^root.*:\(.*\)$/\1/p' /etc/passwd)
+		if [ -z "$USE_SHELL" ]; then
+			printf "dsh: couldn't get shell of container %s\n" "$1"
+		fi
+		printf "using shell %s\n" "$USE_SHELL"
+		docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} "$1" "$USE_SHELL"
+	else
+		USE_SHELL=$(docker exec adam-kops sed -n 's/^root.*:\(.*\)$/\1/p' /etc/passwd)
+		if [ -z "$USE_SHELL" ]; then
+			printf "dsh: couldn't get shell of container %s\n" "$1"
+		fi
+		printf "using shell %s\n" "$USE_SHELL"
+		docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} "$1" "$USE_SHELL"
+	fi
 )
 
 dkill() (
-  if [ -n "$1" ]; then
-    docker container stop $1 && docker container rm $1
-  else
-    printf "usage: dkill <container_name>\n"
-  fi
+	if [ -n "$1" ]; then
+		docker container stop $1 && docker container rm $1
+	else
+		printf "usage: dkill <container_name>\n"
+	fi
 )
 EOF
