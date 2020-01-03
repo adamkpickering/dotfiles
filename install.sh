@@ -161,7 +161,7 @@ dsh() (
 			printf "dsh: couldn't get shell of container %s\n" "$1"
 		fi
 		printf "using shell %s\n" "$USE_SHELL"
-		docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} "$1" "$USE_SHELL"
+		docker exec -it "$1" "$USE_SHELL"
 	fi
 )
 
