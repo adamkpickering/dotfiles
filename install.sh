@@ -99,7 +99,8 @@ EOF
 #--------------------------------------------------------------------------------
 
 cat << EOF > ~/.tmux.conf
-set-window-option -g mode-keys vi
+set-option -g mode-keys vi
+set-option -g default-command '/usr/bin/env bash'
 EOF
 
 
