@@ -143,26 +143,21 @@ h() (
 
 dsh() (
 	if [ -z "$1" ]; then
-		printf "usage: dsh <container_name>\n"
+		printf "usage: dsh <container_name> [shell_name]\n"
 		exit 1
 	fi
-	if ! docker container inspect "$1" 2&>> /dev/null; then
+	if ! docker container inspect "$1" 2>&1 1>& /dev/null; then
 		printf "dsh: container %s does not exist\n" "$1"
 	fi
-	if [ -n "$SSH_AUTH_SOCK" ]; then
-		USE_SHELL=$(docker exec adam-kops sed -n 's/^root.*:\(.*\)$/\1/p' /etc/passwd)
-		if [ -z "$USE_SHELL" ]; then
-			printf "dsh: couldn't get shell of container %s\n" "$1"
-		fi
-		printf "using shell %s\n" "$USE_SHELL"
-		docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} "$1" "$USE_SHELL"
+	if [ -n "$2" ]; then
+		USE_SHELL="$2"
 	else
-		USE_SHELL=$(docker exec adam-kops sed -n 's/^root.*:\(.*\)$/\1/p' /etc/passwd)
-		if [ -z "$USE_SHELL" ]; then
-			printf "dsh: couldn't get shell of container %s\n" "$1"
-		fi
-		printf "using shell %s\n" "$USE_SHELL"
-		docker exec -it "$1" "$USE_SHELL"
+		USE_SHELL='bash'
+	fi
+	if [ -n "$SSH_AUTH_SOCK" ]; then
+		docker exec -it --env SSH_AUTH_SOCK=${SSH_AUTH_SOCK} "$1" /usr/bin/env "$USE_SHELL"
+	else
+		docker exec -it "$1" /usr/bin/env "$USE_SHELL"
 	fi
 )
 
