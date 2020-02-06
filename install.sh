@@ -79,10 +79,12 @@ cat << EOF > ~/.gitconfig
 [core]
   editor = vim
 [alias]
-  s = status
-  d = diff
   a = add
-  c = commit
+  b = branch
+  c = checkout
+  d = diff
+  f = fetch
+  s = status
   adog = log --all --decorate --oneline --graph
 [push]
   default = current
