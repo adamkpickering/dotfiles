@@ -85,7 +85,9 @@ cat << EOF > ~/.gitconfig
   d = diff
   f = fetch
   s = status
+  do = log --decorate --oneline
   adog = log --all --decorate --oneline --graph
+  adogs = log --all --decorate --oneline --graph --simplify-by-decoration
 [push]
   default = current
 [color]
