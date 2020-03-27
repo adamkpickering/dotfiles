@@ -135,7 +135,7 @@ export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/
 # not sure if this is needed
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
 
-alias ls='ls --color'
+alias ls='ls --color=auto'
 
 h() (
 	if [ -n "$1" ]; then
