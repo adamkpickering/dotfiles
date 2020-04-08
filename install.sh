@@ -131,7 +131,10 @@ export PS1='\[\e]0;\w\a\]\[\e[36m\]\u@\h \[\e[33m\][\w]\[\e[0m\]\$ '
 export EDITOR=vim
 # makes sure that highlighting works in vim when in tmux session
 export TERM=xterm-256color
-export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/bin:~/.local/bin:.
+export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/bin:~/.local/bin:/usr/local/go/bin:.
+# golang-specific stuff
+export GOPATH=~/.go
+export GOBIN=~/.local/bin
 # not sure if this is needed
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
 
