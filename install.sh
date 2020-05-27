@@ -139,7 +139,7 @@ export GOBIN=~/.local/bin
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
 
 alias ls='ls --color=auto'
-alias pyact='. venv/bin/activate'
+alias activate='. venv/bin/activate'
 
 h() (
 	if [ -n "$1" ]; then
