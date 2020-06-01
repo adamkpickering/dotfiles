@@ -139,7 +139,6 @@ export GOBIN=~/.local/bin
 #export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
 
 alias ls='ls --color=auto'
-alias activate='. venv/bin/activate'
 
 h() (
 	if [ -n "$1" ]; then
@@ -176,4 +175,13 @@ dkill() (
 		printf "usage: dkill <container_name>\n"
 	fi
 )
+
+activate() {
+	if ! [ -d ./venv ]; then
+		printf 'Creating a new venv at ./venv\n'
+		python3 -m venv venv
+	fi
+	printf 'Activating venv at ./venv. Deactivate with `deactivate`\n'
+	. venv/bin/activate
+}
 EOF
