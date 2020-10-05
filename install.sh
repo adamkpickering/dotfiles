@@ -67,6 +67,7 @@ autocmd FileType yaml           setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType markdown       setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType html           setlocal shiftwidth=2 tabstop=2 noexpandtab
 autocmd FileType htmldjango     setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType tf             setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType python         setlocal shiftwidth=4 tabstop=4 expandtab
 autocmd FileType sh             setlocal shiftwidth=4 tabstop=4 noexpandtab
 autocmd FileType css            setlocal shiftwidth=4 tabstop=4 noexpandtab
@@ -202,7 +203,7 @@ EOF
 if ask_if 'email'; then
 	mkdir -p ~/.mutt/cache
 
-	if ! which mutt; then
+	if ! which mutt >> /dev/null; then
 		printf 'warning: mutt is not installed\n'
 	fi
 
