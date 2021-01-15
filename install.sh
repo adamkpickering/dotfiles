@@ -18,14 +18,20 @@ fi
 # vim
 #--------------------------------------------------------------------------------
 
-# pathogen
-echo -n 'installing pathogen...'
-mkdir -p ~/.vim
-mkdir -p ~/.vim/autoload
-mkdir -p ~/.vim/bundle
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-echo " done"
+printf 'Configuring vim... '
+INSTALL_PATHOGEN='false'
 
+# pathogen
+if [ "$INSTALL_PATHOGEN" = 'true' ]; then
+	mkdir -p ~/.vim
+	mkdir -p ~/.vim/autoload
+	mkdir -p ~/.vim/bundle
+	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+fi
+
+# if you want to install plugins, that goes here
+
+# write .vimrc
 cat << EOF > ~/.vimrc
 syntax on
 color elflord
@@ -57,14 +63,22 @@ autocmd FileType go             setlocal shiftwidth=4 tabstop=4 noexpandtab
 " markdown syntax is poorly defined so highlighting is a dumpster fire
 autocmd FileType markdown setlocal syntax=off
 
-execute pathogen#infect()
-filetype plugin indent on
 EOF
+
+if [ "$INSTALL_PATHOGEN" = 'true' ]; then
+	printf 'execute pathogen#infect()\n' >> ~/.vimrc
+fi
+
+printf 'filetype plugin indent on\n' >> ~/.vimrc
+
+printf 'done\n'
 
 
 #--------------------------------------------------------------------------------
 # git
 #--------------------------------------------------------------------------------
+
+printf 'Configuring git... '
 
 cat << EOF > ~/.gitconfig
 [core]
@@ -88,20 +102,28 @@ cat << EOF > ~/.gitconfig
   email = $EMAIL
 EOF
 
+printf 'done\n'
+
 
 #--------------------------------------------------------------------------------
 # tmux
 #--------------------------------------------------------------------------------
+
+printf 'Configuring tmux... '
 
 cat << EOF > ~/.tmux.conf
 set-option -g mode-keys vi
 set-option -g default-command '/usr/bin/env bash'
 EOF
 
+printf 'done\n'
+
 
 #--------------------------------------------------------------------------------
 # bash
 #--------------------------------------------------------------------------------
+
+printf 'Configuring bash... '
 
 cat << 'EOF' > ~/.bashrc
 umask 022
@@ -174,3 +196,5 @@ activate() {
 	. venv/bin/activate
 }
 EOF
+
+printf 'done\n'
