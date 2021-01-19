@@ -95,6 +95,8 @@ cat << EOF > ~/.gitconfig
   adogs = log --all --decorate --oneline --graph --simplify-by-decoration
 [push]
   default = current
+[pull]
+  ff = only
 [color]
   ui = auto
 [user]
