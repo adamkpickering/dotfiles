@@ -40,6 +40,9 @@ set number
 set scrolloff=999
 " other settings will mess with crontab -e
 set backupcopy=yes
+" makes everything snappier when escaping from insert mode at the cost of
+" not being able to use arrow keys in insert mode
+set noesckeys
 
 " expandtab/noexpandtab -> whether entered tabs are turned into spaces
 " shiftwidth -> how many columns text is indented with << and >>
@@ -116,6 +119,7 @@ printf 'Configuring tmux... '
 cat << EOF > ~/.tmux.conf
 set-option -g mode-keys vi
 set-option -g default-command '/usr/bin/env bash'
+set-option -g escape-time 0
 EOF
 
 printf 'done\n'
