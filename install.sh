@@ -194,12 +194,15 @@ dkill() (
 )
 
 activate() {
-	if ! [ -d ./venv ]; then
+	if [ -d ./local.venv ]; then
+		. local.venv/bin/activate
+	elif ! [ -d ./venv ]; then
 		printf 'Creating a new venv at ./venv\n'
 		python3 -m venv venv
+		. venv/bin/activate
+	else
+		. venv/bin/activate
 	fi
-	printf 'Activating venv at ./venv. Deactivate with `deactivate`\n'
-	. venv/bin/activate
 }
 EOF
 
