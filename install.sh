@@ -118,6 +118,10 @@ printf 'Configuring tmux... '
 
 cat << EOF > ~/.tmux.conf
 set-option -g mode-keys vi
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'Y' send -X copy-line
+
 set-option -g default-command '/usr/bin/env bash'
 set-option -g escape-time 0
 EOF
