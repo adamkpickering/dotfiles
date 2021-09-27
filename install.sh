@@ -19,17 +19,6 @@ fi
 #--------------------------------------------------------------------------------
 
 printf 'Configuring vim... '
-INSTALL_PATHOGEN='false'
-
-# pathogen
-if [ "$INSTALL_PATHOGEN" = 'true' ]; then
-	mkdir -p ~/.vim
-	mkdir -p ~/.vim/autoload
-	mkdir -p ~/.vim/bundle
-	curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-fi
-
-# if you want to install plugins, that goes here
 
 # write .vimrc
 cat << EOF > ~/.vimrc
@@ -74,13 +63,8 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
 let g:pyindent_continue = 'shiftwidth()'
 
+filetype plugin indent on
 EOF
-
-if [ "$INSTALL_PATHOGEN" = 'true' ]; then
-	printf 'execute pathogen#infect()\n' >> ~/.vimrc
-fi
-
-printf 'filetype plugin indent on\n' >> ~/.vimrc
 
 printf 'done\n'
 
