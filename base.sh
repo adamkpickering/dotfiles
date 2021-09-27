@@ -1,7 +1,7 @@
 #!/bin/sh
 
 USAGE=$(cat << EOF
-Usage: ./install.sh <full_name> <email> [OPTIONS]
+Usage: ./base.sh <full_name> <email> [OPTIONS]
 EOF
 )
 
