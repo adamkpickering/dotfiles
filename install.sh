@@ -38,6 +38,7 @@ color elflord
 set noexpandtab
 set number
 set scrolloff=999
+set paste
 
 " other settings will mess with crontab -e
 set backupcopy=yes
