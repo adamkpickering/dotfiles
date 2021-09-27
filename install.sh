@@ -38,8 +38,10 @@ color elflord
 set noexpandtab
 set number
 set scrolloff=999
+
 " other settings will mess with crontab -e
 set backupcopy=yes
+
 " makes everything snappier when escaping from insert mode at the cost of
 " not being able to use arrow keys in insert mode
 set noesckeys
@@ -65,6 +67,11 @@ autocmd FileType go             setlocal shiftwidth=4 tabstop=4 noexpandtab
 
 " markdown syntax is poorly defined so highlighting is a dumpster fire
 autocmd FileType markdown setlocal syntax=off
+
+" set indents after various conditions in python code to only one "tab"
+let g:pyindent_open_paren = 'shiftwidth()'
+let g:pyindent_nested_paren = 'shiftwidth()'
+let g:pyindent_continue = 'shiftwidth()'
 
 EOF
 
