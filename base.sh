@@ -152,6 +152,7 @@ export GOBIN=~/.local/bin
 
 alias ls='ls --color=auto'
 
+
 h() (
 	if [ -n "$1" ]; then
 		history | grep "$1"
@@ -159,6 +160,7 @@ h() (
 		history | tail -n 30
 	fi
 )
+
 
 dsh() (
 	if [ -z "$1" ]; then
@@ -180,6 +182,7 @@ dsh() (
 	fi
 )
 
+
 dkill() (
 	if [ -n "$1" ]; then
 		docker container stop $1 && docker container rm $1
@@ -187,6 +190,7 @@ dkill() (
 		printf "usage: dkill <container_name>\n"
 	fi
 )
+
 
 activate() {
 	if [ -d ./local.venv ]; then
@@ -198,6 +202,41 @@ activate() {
 	else
 		. venv/bin/activate
 	fi
+}
+
+
+dev() {
+	if [ -z "$1" ]; then
+		printf 'usage: dev <path>\n'
+		return
+	fi
+
+	if ! [ -d "$1" ]; then
+		printf "project \"$1\" does not exist\n"
+		return
+	fi
+
+	if ! tmux has-session -t "$1" >> /dev/null 2>&1; then
+		# create tmux session if it doesn't already exist
+		tmux new-session -s "$1" -d -c "$1"
+
+		# build two panes in it if they don't already exist
+		NUMBER_OF_PANES="$(tmux list-panes -t "$1" | wc -l)"
+		if [ "$NUMBER_OF_PANES" -eq '1' ]; then
+			tmux split-window -h -t "$1" -c "$1"
+			tmux send-keys -t "$1:0.0" "cd $1" ENTER clear ENTER
+			tmux send-keys -t "$1:0.1" "cd $1" ENTER clear ENTER
+		fi
+
+		# activate virtualenvs in them if there are certain filenames in the directories
+		if [ -f "$1/setup.py" ]; then
+			tmux send-keys -t "$1:0.0" activate ENTER
+			tmux send-keys -t "$1:0.1" activate ENTER
+		fi
+	fi
+
+	# attach to session
+	tmux attach-session -t "$1"
 }
 EOF
 
