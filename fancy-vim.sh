@@ -73,6 +73,7 @@ let g:ycm_enable_diagnostic_signs = 0
 " plugins
 call plug#begin('~/.vim/plugged')
 Plug 'Valloric/YouCompleteMe'
+Plug 'kana/vim-smartinput'
 call plug#end()
 EOF
 
