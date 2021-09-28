@@ -1,25 +1,43 @@
 #!/bin/sh
 
 USAGE=$(cat << EOF
-Usage: ./nvim.sh
+Usage: ./fancy-vim.sh
 EOF
 )
 
-if test ! $(which nvim); then
-	printf 'nvim is not installed, or is not on path.\n'
-	printf 'Please install it before continuing.\n'
-	exit 1
-fi
 
-printf 'Configuring nvim... '
+# install dependencies
+printf 'Installing dependencies...\n'
 
-# write nvim config
-cat << EOF > ~/.config/nvim/init.vim
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# YouCompleteMe
+sudo apt install build-essential cmake vim-nox python3-dev
+sudo apt install mono-complete golang nodejs default-jdk npm
+printf 'Please follow steps at https://github.com/ycm-core/YouCompleteMe#linux-64-bit\n'
+printf 'to finish YCM installation.\n'
+
+printf 'Done installing dependencies.\n'
+
+
+# write .vimrc
+printf 'Configuring vim... '
+
+cat << EOF > ~/.vimrc
+syntax on
 color elflord
 set noexpandtab
 set number
 set scrolloff=999
-set paste
+
+" other settings will mess with crontab -e
+set backupcopy=yes
+
+" makes everything snappier when escaping from insert mode at the cost of
+" not being able to use arrow keys in insert mode
+set noesckeys
 
 " expandtab/noexpandtab -> whether entered tabs are turned into spaces
 " shiftwidth -> how many columns text is indented with << and >>
@@ -48,6 +66,14 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
 let g:pyindent_continue = 'shiftwidth()'
 
+" tweak YouCompleteMe
+set completeopt-=preview
+let g:ycm_enable_diagnostic_signs = 0
+
+" plugins
+call plug#begin('~/.vim/plugged')
+Plug 'Valloric/YouCompleteMe'
+call plug#end()
 EOF
 
 printf 'done\n'
