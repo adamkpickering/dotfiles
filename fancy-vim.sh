@@ -19,6 +19,9 @@ sudo apt install mono-complete golang nodejs default-jdk npm
 printf 'Please follow steps at https://github.com/ycm-core/YouCompleteMe#linux-64-bit\n'
 printf 'to finish YCM installation.\n'
 
+# ctags
+sudo apt install exuberant-ctags
+
 printf 'Done installing dependencies.\n'
 
 
