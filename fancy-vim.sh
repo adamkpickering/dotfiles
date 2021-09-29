@@ -80,6 +80,7 @@ map <leader>r :edit! <cr>
 " tweak YouCompleteMe
 set completeopt-=preview
 let g:ycm_enable_diagnostic_signs = 0
+let g:ycm_auto_hover = ''
 
 " ctrlp settings
 let g:ctrlp_open_new_file = 'r'
