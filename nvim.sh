@@ -1,7 +1,7 @@
 #!/bin/sh
 
 USAGE=$(cat << EOF
-Usage: ./fancy-vim.sh
+Usage: ./nvim.sh
 EOF
 )
 
@@ -13,23 +13,13 @@ printf 'Installing dependencies...\n'
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-# YouCompleteMe
-sudo apt install build-essential cmake vim-nox python3-dev
-sudo apt install mono-complete golang nodejs default-jdk npm
-printf 'Please follow steps at https://github.com/ycm-core/YouCompleteMe#linux-64-bit\n'
-printf 'to finish YCM installation.\n'
-
-# ctags
-sudo apt install exuberant-ctags
-
 printf 'Done installing dependencies.\n'
 
 
-# write .vimrc
-printf 'Configuring vim... '
+# write init.vim
+printf 'Configuring nvim... '
 
-cat << EOF > ~/.vimrc
-syntax on
+cat << EOF > ~/.config/nvim/init.vim
 color elflord
 set noexpandtab
 set number
@@ -37,10 +27,6 @@ set scrolloff=999
 
 " other settings will mess with crontab -e
 set backupcopy=yes
-
-" makes everything snappier when escaping from insert mode at the cost of
-" not being able to use arrow keys in insert mode
-set noesckeys
 
 " expandtab/noexpandtab -> whether entered tabs are turned into spaces
 " shiftwidth -> how many columns text is indented with << and >>
@@ -80,19 +66,46 @@ map <leader>q :q! <cr>
 map <leader>w :w <cr>
 map <leader>r :edit! <cr>
 
-" tweak YouCompleteMe
-set completeopt-=preview
-let g:ycm_enable_diagnostic_signs = 0
-let g:ycm_auto_hover = ''
-
 " ctrlp settings
 let g:ctrlp_open_new_file = 'r'
 set wildignore+=*__pycache__*,submodules*,local.venv*,venv*
 set wildignore+=vendor*
 
+
+" COC.NVIM SETTINGS
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" GoTo code navigation
+ nmap <silent> gd <Plug>(coc-definition)
+ nmap <silent> gy <Plug>(coc-type-definition)
+ nmap <silent> gi <Plug>(coc-implementation)
+ nmap <silent> gr <Plug>(coc-references)
+
+" Symbol renaming
+nmap <leader>c <Plug>(coc-rename)
+
+
 " plugins
-call plug#begin('~/.vim/plugged')
-Plug 'Valloric/YouCompleteMe'
+call plug#begin(stdpath('cache') . '/plugged')
+Plug 'neoclide/coc.nvim'
+Plug 'fatih/vim-go'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
