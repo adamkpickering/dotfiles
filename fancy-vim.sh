@@ -81,10 +81,16 @@ map <leader>r :edit! <cr>
 set completeopt-=preview
 let g:ycm_enable_diagnostic_signs = 0
 
+" ctrlp settings
+let g:ctrlp_open_new_file = 'r'
+set wildignore+=*__pycache__*,submodules*,local.venv*,venv*
+set wildignore+=vendor*
+
 " plugins
 call plug#begin('~/.vim/plugged')
 Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-surround'
+Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 EOF
 
