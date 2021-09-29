@@ -62,6 +62,12 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
 let g:pyindent_continue = 'shiftwidth()'
 
+" <leader> mappings
+let mapleader = " "
+map <leader>q :q! <cr>
+map <leader>w :w <cr>
+map <leader>r :edit! <cr>
+
 filetype plugin indent on
 EOF
 

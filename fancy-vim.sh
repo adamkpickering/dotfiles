@@ -71,6 +71,12 @@ inoremap (<CR> (<CR>)<C-c>O
 inoremap {<CR> {<CR>}<C-c>O
 inoremap [<CR> [<CR>]<C-c>O
 
+" <leader> mappings
+let mapleader = " "
+map <leader>q :q! <cr>
+map <leader>w :w <cr>
+map <leader>r :edit! <cr>
+
 " tweak YouCompleteMe
 set completeopt-=preview
 let g:ycm_enable_diagnostic_signs = 0
