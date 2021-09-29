@@ -66,6 +66,11 @@ let g:pyindent_open_paren = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
 let g:pyindent_continue = 'shiftwidth()'
 
+" auto-expand certain brackets
+inoremap (<CR> (<CR>)<C-c>O
+inoremap {<CR> {<CR>}<C-c>O
+inoremap [<CR> [<CR>]<C-c>O
+
 " tweak YouCompleteMe
 set completeopt-=preview
 let g:ycm_enable_diagnostic_signs = 0
@@ -73,7 +78,6 @@ let g:ycm_enable_diagnostic_signs = 0
 " plugins
 call plug#begin('~/.vim/plugged')
 Plug 'Valloric/YouCompleteMe'
-Plug 'kana/vim-smartinput'
 call plug#end()
 EOF
 
