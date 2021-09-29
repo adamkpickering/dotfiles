@@ -211,24 +211,21 @@ dev() {
 		return
 	fi
 
-	if ! [ -d "$1" ]; then
-		printf "project \"$1\" does not exist\n"
-		return
-	fi
-
 	if ! tmux has-session -t "$1" >> /dev/null 2>&1; then
 		# create tmux session if it doesn't already exist
-		tmux new-session -s "$1" -d -c "$1"
+		tmux new-session -s "$1" -d
 
 		# build two panes in it if they don't already exist
 		NUMBER_OF_PANES="$(tmux list-panes -t "$1" | wc -l)"
 		if [ "$NUMBER_OF_PANES" -eq '1' ]; then
 			tmux split-window -h -t "$1" -c "$1"
-			tmux send-keys -t "$1:0.0" "cd $1" ENTER clear ENTER
-			tmux send-keys -t "$1:0.1" "cd $1" ENTER clear ENTER
+			if [ -d "$1" ]; then
+				tmux send-keys -t "$1:0.0" "cd $1" ENTER clear ENTER
+				tmux send-keys -t "$1:0.1" "cd $1" ENTER clear ENTER
+			fi
 		fi
 
-		# activate virtualenvs in them if there are certain filenames in the directories
+		# activate virtualenvs if there are certain filenames in the directories
 		if [ -f "$1/setup.py" ]; then
 			tmux send-keys -t "$1:0.0" activate ENTER
 			tmux send-keys -t "$1:0.1" activate ENTER
