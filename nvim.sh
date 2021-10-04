@@ -71,6 +71,7 @@ map <leader>r :edit! <cr>
 let g:ctrlp_open_new_file = 'r'
 set wildignore+=*__pycache__*,submodules*,local.venv*,venv*
 set wildignore+=vendor*
+set wildignore+=node_modules*
 
 
 " COC.NVIM SETTINGS
