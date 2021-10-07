@@ -241,6 +241,15 @@ dev() {
 	# attach to session
 	tmux attach-session -t "$1"
 }
+
+gh() {
+	go help $1 | less -FX
+}
+
+gd() {
+	go doc $1 | less -FX
+}
+
 EOF
 
 printf 'done\n'
