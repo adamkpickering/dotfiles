@@ -242,11 +242,11 @@ dev() {
 	tmux attach-session -t "$1"
 }
 
-gh() {
+goh() {
 	go help $1 | less -FX
 }
 
-gd() {
+god() {
 	go doc $1 | less -FX
 }
 
