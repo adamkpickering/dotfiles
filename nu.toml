@@ -1,0 +1,7 @@
+# gets copied to ~/.config/nu/config.toml
+skip_welcome_message = true
+table_mode = "none"
+
+[textview]
+pager = "less"
+paging_mode = "quitifonescreen"
