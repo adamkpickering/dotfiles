@@ -35,18 +35,19 @@ set backupcopy=yes
 " softtabstop -> used for mixing tabs and spaces if softtabstop < tabstop
 "       and expandtab is not set
 
-autocmd FileType javascript.jsx setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType json           setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType yaml           setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType markdown       setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType html           setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType htmldjango     setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType tf             setlocal shiftwidth=2 tabstop=2 expandtab
-autocmd FileType python         setlocal shiftwidth=4 tabstop=4 expandtab
-autocmd FileType sh             setlocal shiftwidth=4 tabstop=4 noexpandtab
-autocmd FileType css            setlocal shiftwidth=4 tabstop=4 noexpandtab
-autocmd FileType sshconfig      setlocal shiftwidth=4 tabstop=4 noexpandtab
-autocmd FileType go             setlocal shiftwidth=4 tabstop=4 noexpandtab
+autocmd FileType javascript	setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType jsx		setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType json       setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType markdown   setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType html       setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType htmldjango setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType tf         setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType python     setlocal shiftwidth=4 tabstop=4 expandtab
+autocmd FileType sh         setlocal shiftwidth=4 tabstop=4 noexpandtab
+autocmd FileType css        setlocal shiftwidth=4 tabstop=4 noexpandtab
+autocmd FileType sshconfig  setlocal shiftwidth=4 tabstop=4 noexpandtab
+autocmd FileType go         setlocal shiftwidth=4 tabstop=4 noexpandtab
 
 " markdown syntax is poorly defined so highlighting is a dumpster fire
 autocmd FileType markdown setlocal syntax=off
