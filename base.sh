@@ -42,7 +42,9 @@ set noesckeys
 "       and expandtab is not set
 
 autocmd FileType javascript	setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType typescript	setlocal shiftwidth=2 tabstop=2 noexpandtab
 autocmd FileType jsx		setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType vue		setlocal shiftwidth=2 tabstop=2 noexpandtab
 autocmd FileType json       setlocal shiftwidth=2 tabstop=2 noexpandtab
 autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType markdown   setlocal shiftwidth=2 tabstop=2 expandtab
