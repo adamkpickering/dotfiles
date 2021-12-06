@@ -135,6 +135,8 @@ printf 'done\n'
 
 printf 'Configuring bash... '
 
+wget -q https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O ~/.git-completion.bash
+
 cat << 'EOF' > ~/.bashrc
 umask 022
 cd ~
@@ -156,8 +158,8 @@ export PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin:/usr/local/sbin:/opt:~/
 # golang-specific stuff
 export GOPATH=~/.go
 export GOBIN=~/.local/bin
-# not sure if this is needed
-#export MANPATH=/usr/man:/usr/bin/man:/usr/local/man:$MANPATH:.
+# completion for git branch paths (and probably other things)
+. ~/.git-completion.bash
 
 alias ls='ls --color=auto'
 
