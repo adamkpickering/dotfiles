@@ -76,6 +76,10 @@ set wildignore+=*__pycache__*,submodules*,local.venv*,venv*
 set wildignore+=vendor*
 set wildignore+=node_modules*
 
+" fugitive settings
+nnoremap gc :Git checkout 
+nnoremap gb :Git checkout -b 
+
 
 " COC.NVIM SETTINGS
 
@@ -116,6 +120,7 @@ call plug#begin(stdpath('cache') . '/plugged')
 Plug 'neoclide/coc.nvim'
 Plug 'fatih/vim-go'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 EOF
 
