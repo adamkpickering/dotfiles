@@ -115,7 +115,6 @@ nmap <leader>c <Plug>(coc-rename)
 call plug#begin(stdpath('cache') . '/plugged')
 Plug 'neoclide/coc.nvim'
 Plug 'fatih/vim-go'
-Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
 EOF
