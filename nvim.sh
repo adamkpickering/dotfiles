@@ -107,10 +107,11 @@ function! s:check_back_space() abort
 endfunction
 
 " GoTo code navigation
- nmap <silent> gd <Plug>(coc-definition)
- nmap <silent> gy <Plug>(coc-type-definition)
- nmap <silent> gi <Plug>(coc-implementation)
- nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> <C-s> :<C-u>CocList -I symbols<CR>
 
 " Symbol renaming
 nmap <leader>c <Plug>(coc-rename)
