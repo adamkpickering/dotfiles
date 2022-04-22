@@ -120,6 +120,7 @@ Plug 'neoclide/coc.nvim'
 Plug 'fatih/vim-go'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/argtextobj.vim'
 call plug#end()
 EOF
 
