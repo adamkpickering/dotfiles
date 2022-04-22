@@ -72,6 +72,7 @@ map <leader>r :edit! <cr>
 
 " ctrlp settings
 let g:ctrlp_open_new_file = 'r'
+let g:ctrlp_use_caching = 0
 set wildignore+=*__pycache__*,submodules*,local.venv*,venv*
 set wildignore+=vendor*
 set wildignore+=node_modules*
