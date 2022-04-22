@@ -66,9 +66,9 @@ inoremap [<CR> [<CR>]<C-c>O
 
 " <leader> mappings
 let mapleader = " "
-map <leader>q :q! <cr>
-map <leader>w :w <cr>
-map <leader>r :edit! <cr>
+nnoremap <leader>q :q!<CR>
+nnoremap <leader>w :w<CR>
+nnoremap <leader>r :edit!<CR>
 
 " ctrlp settings
 let g:ctrlp_open_new_file = 'r'
@@ -112,9 +112,6 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <C-s> :<C-u>CocList -I symbols<CR>
-
-" Symbol renaming
-nmap <leader>c <Plug>(coc-rename)
 
 
 " plugins
