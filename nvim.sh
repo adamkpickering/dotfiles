@@ -35,10 +35,11 @@ set backupcopy=yes
 " softtabstop -> used for mixing tabs and spaces if softtabstop < tabstop
 "       and expandtab is not set
 
-autocmd FileType javascript	setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType typescript	setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType jsx		setlocal shiftwidth=2 tabstop=2 noexpandtab
-autocmd FileType vue		setlocal shiftwidth=2 tabstop=2 noexpandtab
+autocmd FileType vim        setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType typescript setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType jsx        setlocal shiftwidth=2 tabstop=2 expandtab
+autocmd FileType vue        setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType json       setlocal shiftwidth=2 tabstop=2 noexpandtab
 autocmd FileType yaml       setlocal shiftwidth=2 tabstop=2 expandtab
 autocmd FileType markdown   setlocal shiftwidth=2 tabstop=2 expandtab
@@ -69,6 +70,20 @@ let mapleader = " "
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>r :edit!<CR>
+
+" open new windows in "auxiliary window" on the right
+function! OpenWindowOnRight()
+  let currentBuffer = bufnr("%")
+  let windowCount = winnr('$')
+  if windowCount == 2
+    wincmd L
+  elseif windowCount == 3
+    close
+    wincmd l
+    execute(':buffer' . currentBuffer)
+  endif
+endfunction
+autocmd WinNew * call OpenWindowOnRight()
 
 " ctrlp settings
 let g:ctrlp_open_new_file = 'r'
@@ -116,7 +131,7 @@ nmap <silent> <C-s> :<C-u>CocList -I symbols<CR>
 
 " plugins
 call plug#begin(stdpath('cache') . '/plugged')
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
