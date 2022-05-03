@@ -55,6 +55,12 @@ autocmd FileType go         setlocal shiftwidth=4 tabstop=4 noexpandtab
 " markdown syntax is poorly defined so highlighting is a dumpster fire
 autocmd FileType markdown setlocal syntax=off
 
+" remove the highlighting on vertical divider
+highlight VertSplit cterm=None
+
+" allow exiting to normal mode from terminal
+tnoremap <Esc> <C-\><C-n>
+
 " set indents after various conditions in python code to only one "tab"
 let g:pyindent_open_paren = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
@@ -70,6 +76,24 @@ let mapleader = " "
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>r :edit!<CR>
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>l :wincmd l<CR>
+function! FocusTerminal()
+  let windowCount = winnr('$')
+  if windowCount < 2
+    wincmd n
+  elseif windowCount > 2
+    return
+  endif
+  wincmd l
+  terminal
+  setlocal nonumber
+  normal A
+endfunction
+nnoremap <leader>t :call FocusTerminal()<CR>
+nnoremap <leader>e :wincmd h<CR>
 
 " open new windows in "auxiliary window" on the right
 function! OpenWindowOnRight()
