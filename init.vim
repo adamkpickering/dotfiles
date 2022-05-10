@@ -3,6 +3,8 @@ set noexpandtab
 set number
 set scrolloff=999
 set nohlsearch
+set autoread
+set noswapfile
 
 " other settings will mess with crontab -e
 set backupcopy=yes
@@ -39,6 +41,12 @@ highlight VertSplit cterm=None
 " allow exiting to normal mode from terminal
 tnoremap <Esc> <C-\><C-n>
 
+" general purpose window management mappings
+nnoremap <C-h> :wincmd h<CR>
+nnoremap <C-l> :wincmd l<CR>
+tnoremap <C-h> <C-\><C-n>:wincmd h<CR>
+tnoremap <C-l> <C-\><C-n>:wincmd l<CR>
+
 " set indents after various conditions in python code to only one "tab"
 let g:pyindent_open_paren = 'shiftwidth()'
 let g:pyindent_nested_paren = 'shiftwidth()'
@@ -54,38 +62,10 @@ let mapleader = " "
 nnoremap <leader>q :q!<CR>
 nnoremap <leader>w :w<CR>
 nnoremap <leader>r :edit!<CR>
-nnoremap <leader>h :wincmd h<CR>
-nnoremap <leader>j :wincmd j<CR>
-nnoremap <leader>k :wincmd k<CR>
-nnoremap <leader>l :wincmd l<CR>
-function! FocusTerminal()
-  let windowCount = winnr('$')
-  if windowCount < 2
-    wincmd n
-  elseif windowCount > 2
-    return
-  endif
-  wincmd l
-  terminal
-  setlocal nonumber
-  normal A
-endfunction
-nnoremap <leader>t :call FocusTerminal()<CR>
-nnoremap <leader>e :wincmd h<CR>
 
-" open new windows in "auxiliary window" on the right
-function! OpenWindowOnRight()
-  let currentBuffer = bufnr("%")
-  let windowCount = winnr('$')
-  if windowCount == 2
-    wincmd L
-  elseif windowCount == 3
-    close
-    wincmd l
-    execute(':buffer' . currentBuffer)
-  endif
-endfunction
-autocmd WinNew * call OpenWindowOnRight()
+"===========================================================================
+" plugin config
+"===========================================================================
 
 " ctrlp settings
 let g:ctrlp_open_new_file = 'r'
@@ -93,11 +73,7 @@ let g:ctrlp_use_caching = 0
 set wildignore+=*__pycache__*,submodules*,local.venv*,venv*
 set wildignore+=vendor*
 set wildignore+=node_modules*
-
-" fugitive settings
-nnoremap gc :Git checkout 
-nnoremap gb :Git checkout -b 
-
+"let g:ctrlp_extensions = ['fugitive-branches']
 
 " COC.NVIM SETTINGS
 
@@ -130,12 +106,52 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> <C-s> :<C-u>CocList -I symbols<CR>
 
-
 " plugins
 call plug#begin(stdpath('cache') . '/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'fatih/vim-go'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/argtextobj.vim'
+"Plug 'adamkpickering/ctrlp-fugitive-branches'
 call plug#end()
+
+
+"===========================================================================
+" tig stuff
+"===========================================================================
+
+nnoremap <leader>gs :call CloseAllWindowsButMain()<CR>:terminal tig status<CR>A
+nnoremap <leader>gbl :call CloseAllWindowsButMain()<CR>:terminal tig blame -- %<CR>A
+nnoremap <leader>gbr :call CloseAllWindowsButMain()<CR>:terminal tig refs<CR>A
+nnoremap <leader>gp :!git pull<CR>
+nnoremap <leader>gf :!git fetch --all<CR>
+nnoremap <C-t> :call FocusTerminal()<CR>
+tnoremap <C-t> <C-\><C-n>:call CloseAllWindowsButMain()<CR>
+autocmd FileType gitcommit setlocal nonumber
+autocmd FileType help :wincmd L
+autocmd TermOpen * setlocal nonumber
+
+function! FocusTerminal()
+  call CloseAllWindowsButMain()
+  wincmd n
+  wincmd L
+  for buf in getbufinfo()
+    if getbufvar(buf.bufnr, 'ventana_buffer_name', '') ==# 'terminal'
+      execute ':buffer ' .. buf.bufnr
+      normal A
+      return
+    endif
+  endfor
+  terminal
+  let b:ventana_buffer_name = 'terminal'
+  normal A
+endfunction
+
+function! CloseAllWindowsButMain()
+  execute '1wincmd w'
+  for win in getwininfo()
+    if win.winnr !=# 1
+      execute 'close ' .. win.winnr
+    endif
+  endfor
+endfunction
