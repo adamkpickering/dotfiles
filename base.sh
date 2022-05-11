@@ -90,7 +90,6 @@ wget -q https://raw.githubusercontent.com/git/git/master/contrib/completion/git-
 
 cat << 'EOF' > ~/.bashrc
 umask 022
-cd ~
 
 # the bash history should save 3000 commands
 export HISTFILESIZE=3000

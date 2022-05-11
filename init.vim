@@ -38,9 +38,6 @@ autocmd FileType markdown setlocal syntax=off
 " remove the highlighting on vertical divider
 highlight VertSplit cterm=None
 
-" allow exiting to normal mode from terminal
-tnoremap <Esc> <C-\><C-n>
-
 " general purpose window management mappings
 nnoremap <C-h> :wincmd h<CR>
 nnoremap <C-l> :wincmd l<CR>
@@ -110,7 +107,6 @@ nmap <silent> <C-s> :<C-u>CocList -I symbols<CR>
 call plug#begin(stdpath('cache') . '/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/argtextobj.vim'
 "Plug 'adamkpickering/ctrlp-fugitive-branches'
 call plug#end()
