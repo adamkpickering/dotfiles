@@ -1,4 +1,4 @@
-color elflord
+color default
 set noexpandtab
 set number
 set scrolloff=999
