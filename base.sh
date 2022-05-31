@@ -35,9 +35,11 @@ cat << EOF > ~/.gitconfig
 [alias]
   a = add
   b = branch
-  c = checkout
+  c = checkout --guess
+  cb = checkout -b
   d = diff
   f = fetch
+  fa = fetch --all
   s = status
   do = log --decorate --oneline
   adog = log --all --decorate --oneline --graph
