@@ -35,6 +35,7 @@ cat << EOF > ~/.gitconfig
 [alias]
   a = add
   b = branch
+  bd = branch -D
   c = checkout --guess
   cb = checkout -b
   d = diff
