@@ -1,0 +1,21 @@
+[core]
+  editor = hx
+[alias]
+  a = add
+  b = branch
+  bd = branch -D
+  c = checkout --guess
+  cb = checkout -b
+  d = diff
+  f = fetch
+  fa = fetch --all
+  s = status
+  do = log --decorate --oneline
+  adog = log --all --decorate --oneline --graph
+  adogs = log --all --decorate --oneline --graph --simplify-by-decoration
+[push]
+  default = current
+[pull]
+  ff = only
+[color]
+  ui = auto
