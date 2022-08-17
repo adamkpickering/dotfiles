@@ -1,4 +1,6 @@
 #!/bin/sh
+# Lays down a basic config for hacking on, for example, remote systems.
+# Not a full development setup.
 
 USAGE=$(cat << EOF
 Usage: ./base.sh <full_name> <email> [OPTIONS]
@@ -53,13 +55,4 @@ printf 'done\n'
 printf 'Configuring bash... '
 wget -q https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O ~/.git-completion.bash
 cp .bashrc ~/.bashrc
-printf 'done\n'
-
-
-#--------------------------------------------------------------------------------
-# wezterm
-#--------------------------------------------------------------------------------
-
-printf 'Configuring wezterm... '
-cp .wezterm.lua ~/.wezterm.lua
 printf 'done\n'
