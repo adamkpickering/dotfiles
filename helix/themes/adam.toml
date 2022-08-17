@@ -1,0 +1,98 @@
+# types
+"type" = { fg = "turquoise" }
+"constructor" = { fg = "turquoise" }
+
+# keywords
+"keyword" = { fg = "pale_yellow" }
+"label" = { fg = "pale_yellow" }
+"tag" = { fg = "pale_yellow" }
+"operator" = { fg = "pale_yellow" }
+
+# regular code
+"special" = { fg = "light_gray" }
+"punctuation" = { fg = "light_gray" }
+"variable" = { fg = "light_gray" }
+"function" = { fg = "light_gray" }
+"attribute" = { fg = "light_gray" }
+
+# comments
+"comment" = { fg = "dark_green", modifiers = ["italic"] }
+
+# non-string/character constants
+"constant" = { fg = "pale_orange" }
+"type.enum.variant" = { fg = "pale_orange" }
+
+# string/character constants
+"string" = { fg = "pale_green" }
+"constant.character" = { fg = "pale_green" }
+
+# for file types that have to do with writing
+"markup.heading" = { modifiers = ["underlined", "bold"] }
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.link.url" = { fg = "blue2", modifiers = ["underlined"] }
+"markup.link.label" = { fg = "pale_yellow" }
+"markup.link.text" = { fg = "pale_green" }
+
+# for diffs
+"diff.plus" = { fg = "green" }
+"diff.delta" = { fg = "gold" }
+"diff.minus" = { fg = "red" }
+
+"ui.background" = { fg = "light_gray", bg = "black" }
+
+"ui.window" = { bg = "widget" }
+"ui.popup" = { bg = "widget" }
+"ui.help" = { bg = "widget" }
+"ui.menu" = { bg = "widget" }
+"ui.menu.selected" = { bg = "dark_blue2" }
+
+# TODO: Alternate bg colour for `ui.cursor.match` and `ui.selection`.
+"ui.cursor" = { fg = "cursor", modifiers = ["reversed"] }
+"ui.cursor.primary" = { fg = "cursor", modifiers = ["reversed"] }
+"ui.cursor.match" = { bg = "#3a3d41", modifiers = ["underlined"] }
+
+"ui.selection" = { bg = "#3a3d41" }
+"ui.selection.primary" = { bg = "dark_blue" }
+
+"ui.linenr" = { fg = "dark_gray" }
+"ui.linenr.selected" = { fg = "light_gray" }
+
+"ui.cursorline.primary" = { bg = "dark_gray3" }
+"ui.statusline" = { fg = "white", bg = "blue" }
+"ui.statusline.inactive" = { fg = "white", bg = "blue" }
+
+"ui.text" = { fg = "light_gray" }
+"ui.text.focus" = { fg = "white" }
+
+"ui.virtual.whitespace" = { fg = "dark_gray" }
+"ui.virtual.ruler" = { bg = "borders" }
+
+"warning" = { fg = "gold2" }
+"error" = { fg = "red" }
+"info" = { fg = "light_blue" }
+"hint" = { fg = "light_gray" }
+
+diagnostic = { modifiers = ["underlined"] }
+
+[palette]
+gold = "#d7ba7d"
+gold2 = "#cca700"
+light_gray = "#c6c6c6"
+dark_gray = "#858585"
+dark_gray3= "#282828"
+blue = "#007acc"
+blue2 = "#569CD6"
+light_blue = "#75beff"
+dark_blue = "#264f78"
+dark_blue2 = "#094771"
+turquoise = "#91ffff"
+pale_green = "#8fe289"
+dark_green = "#357a00"
+pale_yellow = "#f9ffa1"
+pale_orange = "#ffa687"
+
+# for ui
+cursor = "#a6a6a6"
+widget = "#252526"
+borders = "#323232"

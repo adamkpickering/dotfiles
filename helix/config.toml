@@ -1,0 +1,23 @@
+theme = "adam"
+
+[editor]
+scrolloff = 999
+mouse = false
+middle-click-paste = false
+idle-timeout = 0
+
+[editor.lsp]
+display-messages = true
+
+[editor.cursor-shape]
+insert = "underline"
+
+[editor.search]
+smart-case = false
+
+[keys.normal]
+G = "goto_last_line"
+x = "extend_to_line_bounds"
+
+[keys.select]
+x = "extend_to_line_bounds"
