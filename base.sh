@@ -21,7 +21,7 @@ fi
 #--------------------------------------------------------------------------------
 
 printf 'Configuring vim... '
-cp ./.vimrc ~/.vimrc
+cp vim/.vimrc ~/.vimrc
 printf 'done\n'
 
 
@@ -30,7 +30,7 @@ printf 'done\n'
 #--------------------------------------------------------------------------------
 
 printf 'Configuring git... '
-cp .gitconfig ~/.gitconfig
+cp git/.gitconfig ~/.gitconfig
 cat << EOF >> ~/.gitconfig
 [user]
   name = $FULL_NAME
@@ -44,7 +44,7 @@ printf 'done\n'
 #--------------------------------------------------------------------------------
 
 printf 'Configuring tmux... '
-cp .tmux.conf ~/.tmux.conf
+cp tmux/.tmux.conf ~/.tmux.conf
 printf 'done\n'
 
 
@@ -54,5 +54,5 @@ printf 'done\n'
 
 printf 'Configuring bash... '
 wget -q https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O ~/.git-completion.bash
-cp .bashrc ~/.bashrc
+cp bash/.bashrc ~/.bashrc
 printf 'done\n'
