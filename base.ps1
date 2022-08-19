@@ -1,1 +1,1 @@
-cp .vimrc %USERPROFILE%\.vimrc
+cp .vimrc $HOME\.vimrc
