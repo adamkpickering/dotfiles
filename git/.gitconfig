@@ -7,9 +7,10 @@
   c = checkout --guess
   cb = checkout -b
   d = diff
+  dc = diff --cached
   f = fetch
   fa = fetch --all
-  s = status
+  s = status --short
   do = log --decorate --oneline
   adog = log --all --decorate --oneline --graph
   adogs = log --all --decorate --oneline --graph --simplify-by-decoration
@@ -19,3 +20,4 @@
   ff = only
 [color]
   ui = auto
+  status = always
