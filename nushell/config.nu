@@ -6,7 +6,16 @@ module completions {
   # and a helper command that knows how to complete values for those flags and parameters
   #
   # This is a simplified version of completions for git branches and git remotes
-  def "nu-complete git branches" [] {
+  def "nu-complete git all_branches" [] {
+    let all_branches = (^git branch --all | lines | each {
+      |line| $line | str replace '[\*\+] ' '' | str trim
+    })
+    let remote_branches = ($all_branches | str replace 'remotes/' '')
+    let no_remote_remote_branches = ($all_branches | find -r '^remotes/' | find -v HEAD | path split | each { |split_path| $split_path | range 2.. | path join })
+    $remote_branches | append $no_remote_remote_branches | uniq
+  }
+
+  def "nu-complete git local_branches" [] {
     ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
   }
 
@@ -14,8 +23,16 @@ module completions {
     ^git remote | lines | each { |line| $line | str trim }
   }
 
+  export extern "git c" [
+    branch?: string@"nu-complete git all_branches" # name of the branch to checkout
+  ]
+
+  export extern "git bd" [
+    branch?: string@"nu-complete git local_branches"
+  ]
+
   export extern "git checkout" [
-    branch?: string@"nu-complete git branches" # name of the branch to checkout
+    branch?: string@"nu-complete git all_branches" # name of the branch to checkout
     -b: string                                 # create and checkout a new branch
     -B: string                                 # create/reset and checkout a branch
     -l                                         # create reflog for new branch
@@ -41,7 +58,7 @@ module completions {
 
   export extern "git push" [
     remote?: string@"nu-complete git remotes", # the name of the remote
-    refspec?: string@"nu-complete git branches"# the branch / refspec
+    refspec?: string@"nu-complete git local_branches"# the branch / refspec
     --verbose(-v)                              # be more verbose
     --quiet(-q)                                # be more quiet
     --repo: string                             # repository
@@ -79,7 +96,7 @@ let default_theme = {
     # color for nushell primitives
     separator: white
     leading_trailing_space_bg: { attr: n } # no fg, no bg, attr none effectively turns this off
-    header: green_bold
+    header: green
     empty: blue
     bool: white
     int: white
@@ -92,7 +109,7 @@ let default_theme = {
     nothing: white
     binary: white
     cellpath: white
-    row_index: green_bold
+    row_index: green
     record: white
     list: white
     block: white
