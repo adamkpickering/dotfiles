@@ -22,6 +22,7 @@ D = ["select_mode", "goto_line_end", "delete_selection"]
 G = "goto_last_line"
 Y = ["select_mode", "goto_line_end", "yank", "collapse_selection"]
 x = "extend_to_line_bounds"
+C-i = "jump_forward" # on Windows, seems to not be default
 
 [keys.select]
 x = "extend_to_line_bounds"
