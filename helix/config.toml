@@ -15,6 +15,9 @@ insert = "underline"
 [editor.search]
 smart-case = false
 
+[editor.file-picker]
+hidden = false
+
 [keys.normal]
 # Causes a panic, but this will be nice eventually.
 # C = ["select_mode", "goto_line_end", "change_selection"]
