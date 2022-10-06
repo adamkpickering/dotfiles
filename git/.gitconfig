@@ -4,7 +4,7 @@
   a = add
   b = branch
   bd = branch -D
-  c = checkout --guess
+  c = checkout --guess --quiet
   cb = checkout -b
   d = diff
   dc = diff --cached
