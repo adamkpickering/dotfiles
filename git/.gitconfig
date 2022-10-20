@@ -21,3 +21,5 @@
 [color]
   ui = auto
   status = always
+[rerere]
+  enabled = true
