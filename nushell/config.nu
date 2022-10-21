@@ -31,11 +31,31 @@ module completions {
     branch?: string@"nu-complete git local_branches"
   ]
 
+  export extern "git merge" [
+    branch?: string@"nu-complete git all_branches"
+    --help
+  ]
+
+  export extern "git rebase" [
+    ref?: string@"nu-complete git all_branches"
+    --help
+    -i
+  ]
+
+  export extern "git reset" [
+    ref?: string@"nu-complete git all_branches"
+    --help
+    --soft
+    --mixed
+    --hard
+  ]
+
   export extern "git checkout" [
     branch?: string@"nu-complete git all_branches" # name of the branch to checkout
     -b: string                                 # create and checkout a new branch
     -B: string                                 # create/reset and checkout a branch
     -l                                         # create reflog for new branch
+    --help
     --guess                                    # second guess 'git checkout <no-such-branch>' (default)
     --overlay                                  # use overlay mode (default)
     --quiet(-q)                                # suppress progress reporting
@@ -59,6 +79,7 @@ module completions {
   export extern "git push" [
     remote?: string@"nu-complete git remotes", # the name of the remote
     refspec?: string@"nu-complete git local_branches"# the branch / refspec
+    --help
     --verbose(-v)                              # be more verbose
     --quiet(-q)                                # be more quiet
     --repo: string                             # repository
