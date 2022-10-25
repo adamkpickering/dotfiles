@@ -37,17 +37,21 @@ module completions {
   ]
 
   export extern "git rebase" [
+    --interactive(-i)
     ref?: string@"nu-complete git all_branches"
+    --onto: string@"nu-complete git all_branches"
+    --abort
+    --continue
+    --skip
     --help
-    -i
   ]
 
   export extern "git reset" [
-    ref?: string@"nu-complete git all_branches"
-    --help
     --soft
     --mixed
     --hard
+    ref?: string@"nu-complete git all_branches"
+    --help
   ]
 
   export extern "git checkout" [
@@ -55,7 +59,6 @@ module completions {
     -b: string                                 # create and checkout a new branch
     -B: string                                 # create/reset and checkout a branch
     -l                                         # create reflog for new branch
-    --help
     --guess                                    # second guess 'git checkout <no-such-branch>' (default)
     --overlay                                  # use overlay mode (default)
     --quiet(-q)                                # suppress progress reporting
@@ -74,12 +77,12 @@ module completions {
     --patch(-p)                                # select hunks interactively
     --ignore-skip-worktree-bits                # do not limit pathspecs to sparse entries only
     --pathspec-from-file: string               # read pathspec from file
+    --help
   ]
 
   export extern "git push" [
     remote?: string@"nu-complete git remotes", # the name of the remote
     refspec?: string@"nu-complete git local_branches"# the branch / refspec
-    --help
     --verbose(-v)                              # be more verbose
     --quiet(-q)                                # be more quiet
     --repo: string                             # repository
@@ -105,6 +108,7 @@ module completions {
     --push-option(-o): string                  # option to transmit
     --ipv4(-4)                                 # use IPv4 addresses only
     --ipv6(-6)                                 # use IPv6 addresses only
+    --help
   ]
 }
 
