@@ -1,7 +1,7 @@
 # Nushell Environment Config File
 
 def create_left_prompt [] {
-    let result = ( do -i { git rev-parse --is-inside-work-tree } | complete )
+    let result = ( do -i { git rev-parse --is-inside-work-tree | complete } )
     if $result.exit_code == 0 {
         print -n "\n"
         print -n (git status --short --branch)
