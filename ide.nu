@@ -29,7 +29,7 @@ def main [full_name: string, email: string] {
 		lines |
 		append $"[user]\n  name = ($full_name)\n  email = ($email)" |
 		str collect "\n" |
-		save $paths.gitconfig
+		save -f $paths.gitconfig
 	print "done"
 
 	print -n "Configuring wezterm... "
