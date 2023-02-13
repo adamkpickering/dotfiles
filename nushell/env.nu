@@ -55,3 +55,6 @@ let-env NU_PLUGIN_DIRS = [
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # let-env PATH = ($env.PATH | prepend '/some/path')
+
+# Added by me
+let-env EDITOR = 'hx'
