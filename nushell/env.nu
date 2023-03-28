@@ -5,8 +5,10 @@ def create_left_prompt [] {
     if $result.exit_code == 0 {
         print -n "\n"
         print -n (git status --short --branch)
-        let repo_dir =  (git rev-parse --show-toplevel | path basename | str trim)
-        let repo_path = (git rev-parse --show-prefix | path split | drop 1 | prepend $repo_dir | path join)
+        let repo_full_path = (git rev-parse --show-toplevel)
+        let repo_name =  ($repo_full_path | path basename)
+        let relative_repo_path = ($env.PWD | path relative-to $repo_full_path)
+        let repo_path = ([$repo_name $relative_repo_path] | path join)
         echo [(ansi reset) (ansi yellow) $repo_path (ansi reset)] | str collect
     } else {
         echo [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str collect
