@@ -28,7 +28,7 @@ def main [full_name: string, email: string] {
 		str replace 'vim' 'hx' |
 		lines |
 		append $"[user]\n  name = ($full_name)\n  email = ($email)" |
-		str collect "\n" |
+		str join "\n" |
 		save -f $paths.gitconfig
 	print "done"
 

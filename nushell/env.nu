@@ -9,22 +9,22 @@ def create_left_prompt [] {
         let repo_name =  ($repo_full_path | path basename)
         let relative_repo_path = ($env.PWD | path relative-to $repo_full_path)
         let repo_path = ([$repo_name $relative_repo_path] | path join)
-        echo [(ansi reset) (ansi yellow) $repo_path (ansi reset)] | str collect
+        [(ansi reset) (ansi yellow) $repo_path (ansi reset)] | str join
     } else {
-        echo [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str collect
+        [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
     }
 }
 
 # Use nushell functions to define your right and left prompt
-let-env PROMPT_COMMAND = { create_left_prompt }
+let-env PROMPT_COMMAND = {|| create_left_prompt }
 let-env PROMPT_COMMAND_RIGHT = ""
 
 # The prompt indicators are environmental variables that represent
 # the state of the prompt
-let-env PROMPT_INDICATOR = { "> " }
-let-env PROMPT_INDICATOR_VI_INSERT = { ": " }
-let-env PROMPT_INDICATOR_VI_NORMAL = { "> " }
-let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
+let-env PROMPT_INDICATOR = {|| "> " }
+let-env PROMPT_INDICATOR_VI_INSERT = {|| ": " }
+let-env PROMPT_INDICATOR_VI_NORMAL = {|| "> " }
+let-env PROMPT_MULTILINE_INDICATOR = {|| "::: " }
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
@@ -32,12 +32,12 @@ let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
 # Note: The conversions happen *after* config.nu is loaded
 let-env ENV_CONVERSIONS = {
   "PATH": {
-    from_string: { |s| $s | split row (char esep) }
-    to_string: { |v| $v | str collect (char esep) }
+    from_string: { |s| $s | split row (char esep) | path expand -n }
+    to_string: { |v| $v | path expand -n | str join (char esep) }
   }
   "Path": {
-    from_string: { |s| $s | split row (char esep) }
-    to_string: { |v| $v | str collect (char esep) }
+    from_string: { |s| $s | split row (char esep) | path expand -n }
+    to_string: { |v| $v | path expand -n | str join (char esep) }
   }
 }
 
@@ -56,7 +56,7 @@ let-env NU_PLUGIN_DIRS = [
 ]
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
-# let-env PATH = ($env.PATH | prepend '/some/path')
+# let-env PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
 # Added by me
 let-env EDITOR = 'hx'
