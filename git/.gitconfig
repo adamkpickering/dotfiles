@@ -4,6 +4,8 @@
   autocrlf = false
 [alias]
   a = add
+  ai = add --interactive
+  ap = add --patch
   b = branch
   bd = branch -D
   c = checkout --guess --quiet
