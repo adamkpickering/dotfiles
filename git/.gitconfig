@@ -27,5 +27,3 @@
   status = always
 [rerere]
   enabled = true
-[remote "upstream"]
-  fetch = +refs/pull/*:refs/remotes/pr/*
