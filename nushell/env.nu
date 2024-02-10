@@ -71,6 +71,10 @@ $env.NU_PLUGIN_DIRS = [
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 if (sys | get host.name) != 'Windows' {
     $env.PATH = ($env.PATH | split row (char esep) | prepend '~/.rd/bin')
+    $env.PATH = ($env.PATH | split row (char esep) | append '~/.local/bin')
+    $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
+    $env.GOPATH = '/home/adam/.go'
+    $env.GOBIN = '/home/adam/.local/bin'
 }
 
 # Added by me
