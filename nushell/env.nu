@@ -1,6 +1,6 @@
 # Nushell Environment Config File
 #
-# version = "0.87.0"
+# version = "0.94.1"
 
 def create_left_prompt [] {
     let result = ( do -i { git rev-parse --is-inside-work-tree | complete } )
@@ -56,20 +56,20 @@ $env.ENV_CONVERSIONS = {
 }
 
 # Directories to search for scripts when calling source or use
+# The default for this is $nu.default-config-dir/scripts
 $env.NU_LIB_DIRS = [
-    # FIXME: This default is not implemented in rust code as of 2023-09-06.
     ($nu.default-config-dir | path join 'scripts') # add <nushell-config-dir>/scripts
 ]
 
 # Directories to search for plugin binaries when calling register
+# The default for this is $nu.default-config-dir/plugins
 $env.NU_PLUGIN_DIRS = [
-    # FIXME: This default is not implemented in rust code as of 2023-09-06.
     ($nu.default-config-dir | path join 'plugins') # add <nushell-config-dir>/plugins
 ]
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
-if (sys | get host.name) != 'Windows' {
+if (sys host).name != 'Windows' {
     $env.PATH = ($env.PATH | split row (char esep) | prepend '~/.rd/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '~/.local/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
