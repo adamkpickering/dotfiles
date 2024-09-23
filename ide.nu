@@ -16,7 +16,7 @@ let windows_paths = {
 
 def main [full_name: string, email: string] {
 	# determine which set of paths to use
-	let paths = if (sys | get host.name) == 'Windows' {
+	let paths = if (sys host | get name) == 'Windows' {
 		$windows_paths
 	} else {
 		$linux_paths
