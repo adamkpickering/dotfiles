@@ -79,3 +79,30 @@ if (sys host).name != 'Windows' {
 
 # Added by me
 $env.EDITOR = 'hx'
+
+def git-sync [] {
+    # check for existence of required remotes
+    if (git remote -v | find origin | length) == 0 {
+        error make {msg: 'failed to find remote "origin"'}
+    }
+    if (git remote -v | find upstream | length) == 0 {
+        error make {msg: 'failed to find remote "origin"'}
+    }
+
+    # find branches to update
+    let branches = [
+        main
+        main-source
+    ]
+
+    # update branches
+    let current_branch = (git branch | parse --regex '\* (?P<branch>[a-zA-Z0-9-_]+)' | get branch.0)
+    for branch in $branches {
+        print --no-newline $'Updating branch "($branch)"...'
+        git checkout --quiet $branch
+        git reset --hard --quiet $"upstream/($branch)"
+        git push --quiet origin
+        print " done"
+    }
+    git checkout --quiet $current_branch
+}
