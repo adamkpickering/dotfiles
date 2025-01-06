@@ -39,7 +39,6 @@ def main [full_name: string, email: string] {
 	print -n "Configuring nushell... "
 	mkdir $paths.nushell
 	cp nushell/config.nu ([$paths.nushell, 'config.nu'] | path join)
-	cp nushell/env.nu ([$paths.nushell, 'env.nu'] | path join)
 	print "done"
 
 	print -n "Configuring helix... "
