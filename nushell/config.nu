@@ -258,3 +258,36 @@ def git-sync [] {
     }
     git checkout --quiet $current_branch
 }
+
+def "k3ss create" [] {
+  let kubeconfig_dst_path = ("~/.kube/config" | path expand)
+  let kubeconfig_src_path = "/etc/rancher/k3s/k3s.yaml"
+
+  if (systemctl status k3s | complete).exit_code == 0 {
+    print "cluster already exists"
+    return 1
+  }
+
+  if ($kubeconfig_dst_path | path exists) {
+    print $"($kubeconfig_dst_path) exists and kubeconfig merging is not implemented"
+    return 1
+  }
+
+  curl -sfL https://get.k3s.io | sh -
+
+  sudo cp $kubeconfig_src_path $kubeconfig_dst_path
+  sudo chown $"(whoami):(whoami)" $kubeconfig_dst_path
+}
+
+def "k3ss destroy" [] {
+  let kubeconfig_dst_path = ("~/.kube/config" | path expand)
+
+  if (which k3s-uninstall.sh | length) != 1 {
+    print "no cluster to remove"
+    return 1
+  }
+
+  rm -f $kubeconfig_dst_path
+
+  k3s-uninstall.sh
+}
