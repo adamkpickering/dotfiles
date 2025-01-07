@@ -226,6 +226,7 @@ $env.config.show_banner = false
 $env.config.table.mode = "none"
 $env.config.footer_mode = "auto"
 $env.config.completions.quick = false
+$env.config.history.sync_on_enter = false
 
 # --------------------------------------------------------------------------------
 # Custom commands for calling directly
