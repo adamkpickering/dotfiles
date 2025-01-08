@@ -259,18 +259,20 @@ def git-sync [] {
     git checkout --quiet $current_branch
 }
 
-def "k3ss create" [] {
+# k3dev manages a local installation of k3s for use as a development environment.
+def "k3dev" [] {
+}
+
+def "k3dev up" [] {
   let kubeconfig_dst_path = ("~/.kube/config" | path expand)
   let kubeconfig_src_path = "/etc/rancher/k3s/k3s.yaml"
 
   if (systemctl status k3s | complete).exit_code == 0 {
-    print "cluster already exists"
-    return 1
+    error make {msg: "cluster already exists"}
   }
 
   if ($kubeconfig_dst_path | path exists) {
-    print $"($kubeconfig_dst_path) exists and kubeconfig merging is not implemented"
-    return 1
+    error make {msg: $"($kubeconfig_dst_path) exists and kubeconfig merging is not implemented"}
   }
 
   curl -sfL https://get.k3s.io | sh -
@@ -279,12 +281,11 @@ def "k3ss create" [] {
   sudo chown $"(whoami):(whoami)" $kubeconfig_dst_path
 }
 
-def "k3ss destroy" [] {
+def "k3dev down" [] {
   let kubeconfig_dst_path = ("~/.kube/config" | path expand)
 
   if (which k3s-uninstall.sh | length) != 1 {
-    print "no cluster to remove"
-    return 1
+    error make {msg: "no cluster to remove"}
   }
 
   rm -f $kubeconfig_dst_path
