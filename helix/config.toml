@@ -22,11 +22,6 @@ hidden = false
 left = ["mode", "spinner", "file-name", "file-line-ending"]
 
 [keys.normal]
-# Causes a panic, but this will be nice eventually.
-# C = ["select_mode", "goto_line_end", "change_selection"]
-D = ["select_mode", "goto_line_end", "delete_selection"]
-G = "goto_last_line"
-Y = ["select_mode", "goto_line_end", "yank", "collapse_selection"]
 x = "extend_to_line_bounds"
 C-i = "jump_forward" # on Windows, seems to not be default
 
