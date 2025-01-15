@@ -5,6 +5,10 @@ scrolloff = 999
 mouse = false
 middle-click-paste = false
 idle-timeout = 0
+completion-timeout = 5
+completion-replace = true
+auto-pairs = false
+gutters = ["diagnostics", "diff", "line-numbers", "spacer"]
 
 [editor.lsp]
 display-messages = true
@@ -19,7 +23,7 @@ smart-case = false
 hidden = false
 
 [editor.statusline]
-left = ["mode", "spinner", "file-name", "file-line-ending"]
+left = ["mode", "spinner", "file-name", "file-type", "file-line-ending"]
 
 [keys.normal]
 x = "extend_to_line_bounds"
