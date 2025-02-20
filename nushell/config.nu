@@ -173,8 +173,7 @@ use completions *
 # --------------------------------------------------------------------------------
 
 def create_left_prompt [] {
-    let result = ( do -i { git rev-parse --is-inside-work-tree | complete } )
-    if $result.exit_code == 0 {
+    if (git rev-parse --is-inside-work-tree | complete).exit_code == 0 {
         let first_part = $"\n(git status --short --branch)\n"
         let repo_full_path = (git rev-parse --show-toplevel)
         let repo_name =  ($repo_full_path | path basename)
@@ -233,35 +232,43 @@ $env.config.history.sync_on_enter = false
 # --------------------------------------------------------------------------------
 
 def git-sync [] {
-    # check for existence of required remotes
-    if (git remote -v | find origin | length) == 0 {
-        error make {msg: 'failed to find remote "origin"'}
-    }
-    if (git remote -v | find upstream | length) == 0 {
-        error make {msg: 'failed to find remote "origin"'}
-    }
+  let whitelisted_branches = [
+    '^main$'
+    '^master$'
+    '^main-source$' # for rancher/partner-charts
+    '^release/v[0-9]+\.[0-9]+$'
+    '^release-v[0-9]+\.[0-9]+$'
+  ]
 
-    # find branches to update
-    let branches = [
-        main
-        main-source
-    ]
-
-    # update branches
-    let current_branch = (git branch | parse --regex '\* (?P<branch>[a-zA-Z0-9-_]+)' | get branch.0)
-    for branch in $branches {
-        print --no-newline $'Updating branch "($branch)"...'
-        git checkout --quiet $branch
-        git reset --hard --quiet $"upstream/($branch)"
-        git push --quiet origin
-        print " done"
+  # Get a list of branches that has elements that look like:
+  # {
+  #   local: main,
+  #   local_long: refs/heads/main,
+  #   remote: origin/main,
+  #   remote_long: refs/remotes/origin/main,
+  # }
+  # The branches are filtered down to ones where the local version
+  # is a regex match for at least one whitelisted branch.
+  let branches = (git for-each-ref --format='%(refname:short) %(refname) %(upstream:short) %(upstream)' refs/heads |
+    lines |
+    parse '{local} {local_long} {remote} {remote_long}' |
+    filter {|branch|
+      $whitelisted_branches | any {|whitelisted_branch| $branch.local =~ $whitelisted_branch}
     }
-    git checkout --quiet $current_branch
+  )
+
+  git fetch --all --prune
+  for branch in $branches {
+    if (git diff --quiet $branch.local $branch.remote | complete).exit_code == 0 {
+      continue
+    }
+    git update-ref $branch.local_long $branch.remote_long
+    print $"Updated branch ($branch.local) from ($branch.remote)"
+  }
 }
 
 # k3dev manages a local installation of k3s for use as a development environment.
-def "k3dev" [] {
-}
+def "k3dev" [] {}
 
 def "k3dev up" [] {
   let kubeconfig_dst_path = ("~/.kube/config" | path expand)
