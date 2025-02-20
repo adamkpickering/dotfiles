@@ -232,11 +232,18 @@ $env.config.history.sync_on_enter = false
 # --------------------------------------------------------------------------------
 
 def git-sync [] {
+  # Disallow running with staged or unstaged changes in order
+  # to reduce the chances of losing work.
+  if (git diff-index --quiet HEAD | complete).exit_code != 0 {
+    error make {msg: "Working tree is not clean."}
+  }
+
   let whitelisted_branches = [
     '^main$'
     '^master$'
     '^main-source$' # for rancher/partner-charts
     '^release/v[0-9]+\.[0-9]+$'
+    '^dev-v[0-9]+\.[0-9]+$'
     '^release-v[0-9]+\.[0-9]+$'
   ]
 
@@ -264,6 +271,11 @@ def git-sync [] {
     }
     git update-ref $branch.local_long $branch.remote_long
     print $"Updated branch ($branch.local) from ($branch.remote)"
+  }
+
+  let current_branch = (git branch --show-current | collect | into string)
+  if $current_branch in ($branches | get local) {
+    git reset --hard HEAD
   }
 }
 
