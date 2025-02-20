@@ -299,3 +299,25 @@ def "k3dev down" [] {
 
   k3s-uninstall.sh
 }
+
+def "nugit" [] {}
+
+def "nugit branch" [] {}
+
+def "nugit branch current" [] {
+  git branch --show-current | collect | into string
+}
+
+def "nugit branch list" [] {
+  git for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads |
+    parse '{name} {remote}'
+}
+
+def "nugit remote" [] {}
+
+def "nugit remote list" [] {
+  git remote -v |
+    lines |
+    where $it !~ '\(push\)$' |
+    parse --regex '^(?P<name>\S+)\s+(?P<url>\S+) \(fetch\)$'
+}
