@@ -264,7 +264,8 @@ def git-sync [] {
     }
   )
 
-  git fetch --all --prune
+  print "Fetching remotes..."
+  git fetch --quiet --all --prune
   for branch in $branches {
     if (git diff --quiet $branch.local $branch.remote | complete).exit_code == 0 {
       continue
@@ -275,7 +276,7 @@ def git-sync [] {
 
   let current_branch = (git branch --show-current | collect | into string)
   if $current_branch in ($branches | get local) {
-    git reset --hard HEAD
+    git reset --quiet --hard HEAD
   }
 }
 
