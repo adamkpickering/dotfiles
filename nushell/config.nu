@@ -283,7 +283,7 @@ def git-sync [] {
 # k3dev manages a local installation of k3s for use as a development environment.
 def "k3dev" [] {}
 
-def "k3dev up" [] {
+def "k3dev up" [--version: string] {
   let kubeconfig_dst_path = ("~/.kube/config" | path expand)
   let kubeconfig_src_path = "/etc/rancher/k3s/k3s.yaml"
 
@@ -295,7 +295,11 @@ def "k3dev up" [] {
     error make {msg: $"($kubeconfig_dst_path) exists and kubeconfig merging is not implemented"}
   }
 
-  curl -sfL https://get.k3s.io | sh -
+  with-env {
+    INSTALL_K3S_VERSION: $version,
+  } {
+    curl -sfL https://get.k3s.io | sh -
+  }
 
   sudo cp $kubeconfig_src_path $kubeconfig_dst_path
   sudo chown $"(whoami):(whoami)" $kubeconfig_dst_path
@@ -311,6 +315,15 @@ def "k3dev down" [] {
   rm -f $kubeconfig_dst_path
 
   k3s-uninstall.sh
+}
+
+def "k3dev list-versions" [] {
+  # If we want to get all of the versions, we have to implement pagination.
+  # The most recent versions will have to do for now.
+  http get https://api.github.com/repos/k3s-io/k3s/releases?per_page=100 |
+    where not prerelease |
+    get name |
+    sort -r
 }
 
 def "nugit" [] {}
