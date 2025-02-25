@@ -10,15 +10,15 @@ module completions {
   # This is a simplified version of completions for git branches and git remotes
   def "nu-complete git all_branches" [] {
     let all_branches = (^git branch --all | lines | each {
-      |line| $line | str replace '[\*\+] ' '' | str trim
+      |line| $line | str replace --regex '[*+] ' '' | str trim
     })
     let remote_branches = ($all_branches | str replace 'remotes/' '')
-    let no_remote_remote_branches = ($all_branches | find -r '^remotes/' | find -v HEAD | path split | each { |split_path| $split_path | range 2.. | path join })
+    let no_remote_remote_branches = ($all_branches | find --regex '^remotes/' | find -v HEAD | path split | each { |split_path| $split_path | slice 2.. | path join })
     $remote_branches | append $no_remote_remote_branches | uniq
   }
 
   def "nu-complete git local_branches" [] {
-    ^git branch | lines | each { |line| $line | str replace '[\*\+] ' '' | str trim }
+    ^git branch | lines | each { |line| $line | str replace --regex '[*+] ' '' | str trim }
   }
 
   def "nu-complete git remotes" [] {
