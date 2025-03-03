@@ -334,6 +334,10 @@ def "nugit branch current" [] {
   git branch --show-current | collect | into string
 }
 
+def "nugit branch delete" [branch: string] {
+  git branch --delete --force $branch
+}
+
 def "nugit branch list" [] {
   git for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads |
     parse '{name} {remote}'
