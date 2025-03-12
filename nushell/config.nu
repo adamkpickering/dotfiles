@@ -328,26 +328,26 @@ def "k3dev list-versions" [] {
 
 def "nugit" [] {}
 
-def "nugit branch" [] {}
+def "nugit list" [] {}
 
-def "nugit branch current" [] {
-  git branch --show-current | collect | into string
-}
-
-def "nugit branch delete" [branch: string] {
-  git branch --delete --force $branch
-}
-
-def "nugit branch list" [] {
+def "nugit list branch" [] {
   git for-each-ref --format='%(refname:short) %(upstream:short)' refs/heads |
     parse '{name} {remote}'
 }
 
-def "nugit remote" [] {}
-
-def "nugit remote list" [] {
+def "nugit list remote" [] {
   git remote -v |
     lines |
     where $it !~ '\(push\)$' |
     parse --regex '^(?P<name>\S+)\s+(?P<url>\S+) \(fetch\)$'
+}
+
+def "nugit delete" [] {}
+
+def "nugit delete branch" [branch: string] {
+  git branch --delete --force $branch
+}
+
+def "nugit current-branch" [] {
+  git branch --show-current | collect | into string
 }
