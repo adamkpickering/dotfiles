@@ -228,8 +228,10 @@ $env.config.completions.quick = false
 $env.config.history.sync_on_enter = false
 
 # --------------------------------------------------------------------------------
-# Custom commands for calling directly
+# Custom aliases and commands for calling directly
 # --------------------------------------------------------------------------------
+
+alias k = kubectl
 
 def git-sync [] {
   # Disallow running with staged or unstaged changes in order
