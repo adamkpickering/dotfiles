@@ -28,3 +28,9 @@
   status = always
 [rerere]
   enabled = true
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  renames = copies
+[branch]
+  sort = -committerdate
