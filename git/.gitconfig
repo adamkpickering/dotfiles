@@ -1,7 +1,3 @@
-[core]
-  editor = vim
-  eol = lf
-  autocrlf = false
 [alias]
   a = add
   ai = add --interactive
@@ -19,18 +15,22 @@
   do = log --decorate --oneline
   adog = log --all --decorate --oneline --graph
   adogs = log --all --decorate --oneline --graph --simplify-by-decoration
-[push]
-  default = current
-[pull]
-  ff = only
+[branch]
+  sort = -committerdate
 [color]
   ui = auto
   status = always
-[rerere]
-  enabled = true
+[core]
+  editor = vim
+  eol = lf
+  autocrlf = false
 [diff]
   algorithm = histogram
   colorMoved = plain
   renames = copies
-[branch]
-  sort = -committerdate
+[pull]
+  ff = only
+[push]
+  default = current
+[rerere]
+  enabled = true
