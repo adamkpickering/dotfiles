@@ -234,6 +234,10 @@ $env.config.history.isolation =  true
 
 alias k = kubectl
 
+def h [] {
+  commandline edit --replace (history | get command | reverse | input list --fuzzy)
+}
+
 def git-sync [] {
   # Disallow running with staged or unstaged changes in order
   # to reduce the chances of losing work.
