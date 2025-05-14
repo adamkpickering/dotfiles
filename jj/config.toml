@@ -1,0 +1,24 @@
+[templates]
+log = 'separate(" ", change_id.short(7), commit_id.short(7), if(empty, "(empty)"), local_bookmarks, remote_bookmarks, description)'
+draft_commit_description = '''
+concat(
+  description,
+  "\nJJ: ignore-rest\n",
+  diff.git(),
+)
+'''
+
+[git]
+push-new-bookmarks = true
+
+[revsets]
+log = '::'
+
+[colors]
+commit_id = "yellow"
+change_id = "cyan"
+local_bookmarks = "bright green"
+remote_bookmarks = "bright red"
+
+[ui]
+default-command = "log"
