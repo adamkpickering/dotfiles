@@ -30,12 +30,10 @@ printf 'done\n'
 #--------------------------------------------------------------------------------
 
 printf 'Configuring git... '
-cp git/.gitconfig ~/.gitconfig
-cat << EOF >> ~/.gitconfig
-[user]
-  name = $FULL_NAME
-  email = $EMAIL
-EOF
+mkdir -p ~/.config/git
+cp git/.gitconfig ~/.config/git/config
+git config --global --add user.name "$FULL_NAME"
+git config --global --add user.email "$EMAIL"
 printf 'done\n'
 
 

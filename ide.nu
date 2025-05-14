@@ -1,7 +1,7 @@
 # A cross-platform way to configure my development setup.
 
 let linux_paths = {
-	gitconfig: ('~/.gitconfig' | path expand)
+	gitconfig: ('~/.config/git/config' | path expand)
 	wezterm: ('~/.wezterm.lua' | path expand)
 	nushell: ('~/.config/nushell' | path expand)
 	helix: ('~/.config/helix' | path expand)
@@ -24,12 +24,13 @@ def main [full_name: string, email: string] {
 
 	# install everything
 	print -n "Configuring git... "
+	mkdir ($paths.gitconfig | path dirname)
 	open git/.gitconfig |
 		str replace 'vim' 'hx' |
-		lines |
-		append $"[user]\n  name = ($full_name)\n  email = ($email)" |
 		str join "\n" |
 		save -f $paths.gitconfig
+	git config --global --add user.name $full_name
+	git config --global --add user.email $email
 	print "done"
 
 	print -n "Configuring wezterm... "
