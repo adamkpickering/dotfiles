@@ -173,16 +173,7 @@ use completions *
 # --------------------------------------------------------------------------------
 
 def create_left_prompt [] {
-    if (git rev-parse --is-inside-work-tree | complete).exit_code == 0 {
-        let first_part = $"\n(git status --short --branch)\n"
-        let repo_full_path = (git rev-parse --show-toplevel)
-        let repo_name =  ($repo_full_path | path basename)
-        let relative_repo_path = ($env.PWD | path relative-to $repo_full_path)
-        let repo_path = ([$repo_name $relative_repo_path] | path join)
-        [$first_part (ansi reset) (ansi yellow) $repo_path (ansi reset)] | str join
-    } else {
-        [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
-    }
+    [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
 }
 
 $env.PROMPT_COMMAND = {|| create_left_prompt }
