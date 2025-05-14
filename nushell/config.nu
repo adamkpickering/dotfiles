@@ -235,6 +235,15 @@ def --env dev [] {
   cd ([$dev_directory, $chosen_project] | path join)
 }
 
+def get-regsync-logs [job_id: string] {
+  gh run view --repo rancher/image-mirror --log --job $job_id |
+    lines |
+    parse --regex '(\{.*\})' |
+    get capture0 |
+    each {|it| $it | try { $it | from json} catch { null } } |
+    collect
+}
+
 def git-sync [] {
   # Disallow running with staged or unstaged changes in order
   # to reduce the chances of losing work.
