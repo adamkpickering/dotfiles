@@ -229,6 +229,12 @@ def h [] {
   commandline edit --replace (history | get command | reverse | input list --fuzzy)
 }
 
+def --env dev [] {
+  let dev_directory = ("~/dev" | path expand)
+  let chosen_project = (ls $dev_directory | get name | path basename | input list --fuzzy)
+  cd ([$dev_directory, $chosen_project] | path join)
+}
+
 def git-sync [] {
   # Disallow running with staged or unstaged changes in order
   # to reduce the chances of losing work.
