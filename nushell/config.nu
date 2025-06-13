@@ -273,7 +273,7 @@ def git-sync [] {
   let branches = (git for-each-ref --format='%(refname:short) %(refname) %(upstream:short) %(upstream)' refs/heads |
     lines |
     parse '{local} {local_long} {remote} {remote_long}' |
-    filter {|branch|
+    where {|branch|
       $whitelisted_branches | any {|whitelisted_branch| $branch.local =~ $whitelisted_branch}
     }
   )
