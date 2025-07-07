@@ -391,8 +391,8 @@ vim.opt.wrap = false              -- Don't wrap lines
 vim.opt.swapfile = false          -- Don't use swapfile
 vim.opt.backup = false            -- Don't create backup files
 vim.opt.hlsearch = false          -- Do not highlight search results
--- vim.opt.incsearch = true         -- Incremental search
--- vim.opt.termguicolors = true     -- Enable true colors in the terminal
+vim.opt.incsearch = true          -- Incremental search
+vim.opt.termguicolors = true      -- Enable true colors in the terminal
 vim.opt.scrolloff = 999           -- Lines of context around the cursor
 vim.opt.signcolumn = "yes"        -- Always show the sign column
 vim.opt.isfname:append("@-@")     -- Allow hyphens in filenames for completion
@@ -416,4 +416,28 @@ vim.keymap.set("n", "U", "<C-r>", { noremap = true, silent = true, desc = "Redo"
 -- Colorscheme
 -- ===========================================
 
+local colors = {
+  light_gray = "#c6c6c6",
+  dark_gray = "#858585",
+  blue = "#007acc",
+  turquoise = "#91ffff",
+  pale_green = "#8fe289",
+  dark_green = "#357a00",
+  yellow = "#d7ba7d",
+  pale_yellow = "#f9ffa1",
+  pale_orange = "#ffa687",
+}
+
 vim.cmd('colorscheme torte')
+vim.api.nvim_set_hl(0, "Comment", { fg = colors.dark_green, italic = true })
+vim.api.nvim_set_hl(0, "Type", { fg = colors.turquoise })
+vim.api.nvim_set_hl(0, "Special", { fg = colors.yellow })
+vim.api.nvim_set_hl(0, "String", { fg = colors.pale_green })
+vim.api.nvim_set_hl(0, "Character", { fg = colors.pale_green })
+vim.api.nvim_set_hl(0, "Constant", { fg = colors.pale_orange })
+vim.api.nvim_set_hl(0, "Keyword", { fg = colors.pale_yellow })
+vim.api.nvim_set_hl(0, "Statement", { fg = colors.pale_yellow })
+vim.api.nvim_set_hl(0, "Conditional", { fg = colors.pale_yellow })
+vim.api.nvim_set_hl(0, "Identifier", { fg = colors.light_gray })
+vim.api.nvim_set_hl(0, "LineNr", { fg = colors.dark_gray })
+vim.api.nvim_set_hl(0, "StatusLine", { bg = colors.blue })
