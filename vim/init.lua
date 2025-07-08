@@ -111,7 +111,11 @@ require("lazy").setup({
         -- Mappings for LSP functionalities
         local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
-        vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', '<space>k', vim.lsp.buf.hover, bufopts)
+        vim.keymap.set('n', '<space>r', vim.lsp.buf.rename, bufopts)
+        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+        vim.keymap.set('n', 'gy', vim.lsp.buf.type_definition, bufopts)
 
         -- Highlight references
         vim.api.nvim_create_autocmd('CursorHoldI', {
@@ -195,6 +199,32 @@ require("lazy").setup({
       lspconfig.gopls.setup({
         on_attach = on_attach,
         capabilities = capabilities,
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            staticcheck = true,
+            analyses = {
+              nilness = true,
+              unusedparams = true,
+              shadow = true,
+              unusedwrite = true,
+            },
+            hints = {
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
+              constantValues = true,
+              functionTypeParameters = true,
+              parameterNames = true,
+              rangeVariableTypes = true,
+              setBoolParamNames = true,
+            },
+            linkTarget = "pkg.go.dev",
+            templateExtensions = { ".tmpl", ".gohtml" },
+          },
+        },
+        root_dir = require('lspconfig.util').root_pattern("go.mod", ".git"),
       })
 
       -- Diagnostics Configuration
@@ -285,8 +315,8 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>g', builtin.git_commits, { desc = "Git Commits" })
       vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, { desc = "LSP Document Symbols" })
       vim.keymap.set('n', '<leader>S', builtin.lsp_workspace_symbols, { desc = "LSP Workspace Symbols" })
-      vim.keymap.set('n', '<leader>d', builtin.diagnostics, { desc = "LSP Workspace Symbols" })
-      vim.keymap.set('n', 'gr', builtin.lsp_references, { desc = "LSP Workspace Symbols" })
+      vim.keymap.set('n', '<leader>d', builtin.diagnostics, { desc = "LSP Diagnostics" })
+      vim.keymap.set('n', 'gr', builtin.lsp_references, { desc = "LSP References" })
     end,
   },
 
@@ -302,47 +332,24 @@ require("lazy").setup({
 -- softtabstop -> used for mixing tabs and spaces if softtabstop < tabstop
 --       and expandtab is not set
 
+local all_twos = {
+  tabstop = 2,
+  shiftwidth = 2,
+  softtabstop = 2,
+  expandtab = true,
+}
 local lang_settings = {
+  javascript = all_twos,
+  typescript = all_twos,
+  html = all_twos,
+  css = all_twos,
+  json = all_twos,
+  yaml = all_twos,
+  lua = all_twos,
   python = {
     tabstop = 4,
     shiftwidth = 4,
     softtabstop = 4,
-    expandtab = true,
-  },
-  javascript = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
-    expandtab = true,
-  },
-  typescript = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
-    expandtab = true,
-  },
-  html = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
-    expandtab = true,
-  },
-  css = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
-    expandtab = true,
-  },
-  json = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
-    expandtab = true,
-  },
-  yaml = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
     expandtab = true,
   },
   go = {
@@ -350,12 +357,6 @@ local lang_settings = {
     shiftwidth = 4,
     softtabstop = 4,
     expandtab = false,
-  },
-  lua = {
-    tabstop = 2,
-    shiftwidth = 2,
-    softtabstop = 2,
-    expandtab = true,
   },
 }
 
@@ -400,6 +401,7 @@ vim.opt.updatetime = 300          -- Faster completion (ms to wait for swapfile 
 vim.opt.timeoutlen = 500          -- Time to wait for mapped sequence to complete
 vim.opt.autoread = true           -- Re-read changed files that have not had their buffer changed
 vim.opt.clipboard = "unnamedplus" -- Yanks go to system clipboard, and pastes come from system clipboard
+vim.opt.mouse = ""                -- Disable mouse mode
 
 -- ===========================================
 -- Basic Keymaps (Global)
