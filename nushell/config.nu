@@ -206,7 +206,7 @@ if (sys host).name != 'Windows' {
     $env.GOBIN = '/home/adam/.local/bin'
 }
 
-$env.EDITOR = 'hx'
+$env.EDITOR = 'vim'
 
 # --------------------------------------------------------------------------------
 # Customize $env.config

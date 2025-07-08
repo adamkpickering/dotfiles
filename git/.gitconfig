@@ -21,7 +21,7 @@
   ui = auto
   status = always
 [core]
-  editor = vim
+  editor = hx
   eol = lf
   autocrlf = false
 [diff]
