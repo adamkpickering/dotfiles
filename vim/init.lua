@@ -30,8 +30,6 @@ require("lazy").setup({
 		'hrsh7th/nvim-cmp',
 		dependencies = {
 			'hrsh7th/cmp-nvim-lsp',       -- LSP completion source
-			'hrsh7th/cmp-buffer',         -- Buffer words source
-			'hrsh7th/cmp-path',           -- File path source
 			-- Add more cmp sources as desired, e.g., 'hrsh7th/cmp-cmdline'
 		},
 		config = function()
@@ -80,8 +78,6 @@ require("lazy").setup({
 				}),
 				sources = cmp.config.sources({
 					{ name = 'nvim_lsp' },
-					{ name = 'buffer' },
-					{ name = 'path' },
 				}),
 			})
 		end,
