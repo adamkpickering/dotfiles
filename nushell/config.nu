@@ -221,6 +221,17 @@ if (sys host).name != 'Windows' {
     $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
     $env.GOPATH = '/home/adam/.go'
     $env.GOBIN = '/home/adam/.local/bin'
+
+    if not (which fnm | is-empty) {
+        fnm env --json | from json | load-env
+        $env.PATH = $env.PATH | prepend ($env.FNM_MULTISHELL_PATH | path join "bin")
+        $env.config.hooks.env_change.PWD = (
+            $env.config.hooks.env_change.PWD? | append {
+                condition: {|| ['.nvmrc' '.node-version'] | any {|el| $el | path exists}}
+                code: {|| fnm use}
+            }
+        )
+    }
 }
 
 $env.EDITOR = 'vim'
