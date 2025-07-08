@@ -276,6 +276,9 @@ require("lazy").setup({
       local actions = require('telescope.actions')
       telescope.setup({
         defaults = {
+          file_ignore_patterns = {
+            ".git/",
+          },
           mappings = {
             i = {
               ['<C-u>'] = require('telescope.actions').preview_scrolling_up,
@@ -286,8 +289,7 @@ require("lazy").setup({
         },
         pickers = {
           find_files = {
-            -- don't use ripgrep for this, just find
-            find_command = { "find", ".", "-type", "f", "-not", "-path", "./.git/*" },
+            hidden = true,
           },
         },
         extensions = {
