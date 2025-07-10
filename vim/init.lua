@@ -251,12 +251,10 @@ require("lazy").setup({
         -- default mapping
         toggler = {
           line = '<leader>c',
-          block = '<leader>b',
         },
         -- LHS of operator-pending mappings
         opleader = {
           line = '<leader>c',
-          block = '<leader>b',
         },
         extra = {
           -- Add a space after the comment delimiters (// -> // )
@@ -312,7 +310,7 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = "Find Buffers" })
       vim.keymap.set('n', '<leader>g', builtin.git_commits, { desc = "Git Commits" })
       vim.keymap.set('n', '<leader>s', builtin.lsp_document_symbols, { desc = "LSP Document Symbols" })
-      vim.keymap.set('n', '<leader>S', builtin.lsp_workspace_symbols, { desc = "LSP Workspace Symbols" })
+      vim.keymap.set('n', '<leader>S', builtin.lsp_dynamic_workspace_symbols, { desc = "LSP Workspace Symbols" })
       vim.keymap.set('n', '<leader>d', builtin.diagnostics, { desc = "LSP Diagnostics" })
       vim.keymap.set('n', 'gr', builtin.lsp_references, { desc = "LSP References" })
     end,
