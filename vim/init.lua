@@ -316,6 +316,16 @@ require("lazy").setup({
     end,
   },
 
+  {
+      'kylechui/nvim-surround',
+      version = '*', -- Use version 2.x.x for Neovim 0.7+
+      event = 'VeryLazy',
+      config = function()
+          require('nvim-surround').setup({
+              keymaps = { normal = "s", visual = "s", delete = "ds", change = "cs" }
+          })
+      end
+  },
 }, {})
 
 -- ===========================================
