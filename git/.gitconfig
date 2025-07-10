@@ -1,27 +1,32 @@
 [alias]
   a = add
-  ai = add --interactive
-  ap = add --patch
   b = branch
   bd = branch -D
   c = checkout --guess --quiet
   cb = checkout -b
+  cv = commit --verbose
   d = diff
-  dc = diff --cached
-  f = fetch
+  ds = diff --staged
   fa = fetch --all
   fap = fetch --all --prune
+  ldo = log --decorate --oneline
+  l = log --all --decorate --oneline --graph
+  rr = restore
+  rrs = restore --staged
+  rs = rebase
+  rsa = rebase --abort
+  rsc = rebase --continue
+  rsi = rebase --interactive
+  rt = reset
+  rth = reset --hard
   s = status --short
-  do = log --decorate --oneline
-  adog = log --all --decorate --oneline --graph
-  adogs = log --all --decorate --oneline --graph --simplify-by-decoration
 [branch]
   sort = -committerdate
 [color]
   ui = auto
   status = always
 [core]
-  editor = hx
+  editor = vim
   eol = lf
   autocrlf = false
 [diff]
