@@ -433,10 +433,11 @@ local colors = {
   dark_green = "#357a00",
   yellow = "#d7ba7d",
   pale_yellow = "#f9ffa1",
-  pale_orange = "#ffa687",
+  pale_red = "#ff6868"
 }
 
 vim.cmd('colorscheme torte')
+
 vim.api.nvim_set_hl(0, "Comment", { fg = colors.dark_green, italic = true })
 vim.api.nvim_set_hl(0, "Type", { fg = colors.turquoise })
 vim.api.nvim_set_hl(0, "Special", { fg = colors.yellow })
@@ -448,4 +449,18 @@ vim.api.nvim_set_hl(0, "Statement", { fg = colors.pale_yellow })
 vim.api.nvim_set_hl(0, "Conditional", { fg = colors.pale_yellow })
 vim.api.nvim_set_hl(0, "Identifier", { fg = colors.light_gray })
 vim.api.nvim_set_hl(0, "LineNr", { fg = colors.dark_gray })
+
+vim.api.nvim_set_hl(0, "diffRemoved", { fg = colors.pale_red })
+vim.api.nvim_set_hl(0, "diffAdded", { fg = colors.pale_green })
+vim.api.nvim_set_hl(0, "diffChanged", { fg = colors.yellow })
+vim.api.nvim_set_hl(0, "gitCommitSummary", { fg = colors.light_gray })
+vim.api.nvim_set_hl(0, "gitCommitBranch", { fg = colors.dark_green })
+vim.api.nvim_set_hl(0, "gitCommitHeader", { fg = colors.dark_green })
+vim.api.nvim_set_hl(0, "diffFile", { fg = colors.dark_gray })
+vim.api.nvim_set_hl(0, "diffIndexLine", { fg = colors.dark_gray })
+vim.api.nvim_set_hl(0, "diffSubname", { fg = colors.dark_gray })
+vim.api.nvim_set_hl(0, "diffNewFile", { fg = colors.dark_gray })
+vim.api.nvim_set_hl(0, "diffOldFile", { fg = colors.dark_gray })
+vim.api.nvim_set_hl(0, "diffLine", { fg = colors.turquoise })
+
 vim.api.nvim_set_hl(0, "StatusLine", { bg = colors.blue })
