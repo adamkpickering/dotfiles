@@ -122,6 +122,17 @@ require("lazy").setup({
           buffer = bufnr,
           callback = vim.lsp.buf.clear_references,
         })
+
+        -- Configure format on save
+        if client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = vim.api.nvim_create_augroup('LspFormatting' .. bufnr, { clear = true }),
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr })
+            end,
+          })
+        end
       end
 
       -- ===========================================
@@ -463,4 +474,59 @@ vim.api.nvim_set_hl(0, "diffNewFile", { fg = colors.dark_gray })
 vim.api.nvim_set_hl(0, "diffOldFile", { fg = colors.dark_gray })
 vim.api.nvim_set_hl(0, "diffLine", { fg = colors.turquoise })
 
+vim.api.nvim_set_hl(0, "DiagnosticUnnecessary", { underline = true })
+
+vim.api.nvim_set_hl(0, "Title", { fg = colors.light_gray, underline = true })
+
 vim.api.nvim_set_hl(0, "StatusLine", { bg = colors.blue })
+
+-- ===========================================
+-- Always open help windows on the right
+-- ===========================================
+
+vim.cmd("cnoreabbrev h vertical botright help")
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "help",
+  callback = function()
+    vim.keymap.set("n", "gd", "<C-]>", { noremap = true, silent = true, buffer = true})
+  end,
+})
+
+-- ===========================================
+-- Autosave and Autoformat
+-- ===========================================
+
+-- vim.api.nvim_create_autocmd({"TextChanged", "InsertLeave"}, {
+--   group = vim.api.nvim_create_augroup("AutoFormatSave", { clear = true }),
+--   callback = function()
+--     -- Run formatter only if an LSP server with formatting capabilities is attached
+--     local clients = vim.lsp.buf_get_clients(0) -- Get LSP clients for the current buffer (0)
+--     local has_formatter = false
+--     for _, client in ipairs(clients) do
+--       if client.server_capabilities.documentFormattingProvider or
+--          client.server_capabilities.documentRangeFormattingProvider then
+--         has_formatter = true
+--         break
+--       end
+--     end
+--     if has_formatter then
+--       vim.lsp.buf.format({ async = true }) -- Run asynchronously to avoid blocking UI
+--     end
+--
+--     -- Check if git is installed
+--     local git_present = vim.fn.executable("git")
+--     if git_present == 0 then
+--       return
+--     end
+--
+--     -- Write if inside a Git work tree
+--     local git_status_output = vim.fn.systemlist("git rev-parse --is-inside-work-tree")
+--     local is_inside_git_repo = false
+--     if #git_status_output > 0 and vim.trim(git_status_output[1]) == "true" then
+--       is_inside_git_repo = true
+--     end
+--     if is_inside_git_repo then
+--       vim.cmd("write")
+--     end
+--   end,
+-- })
