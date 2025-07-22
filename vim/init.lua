@@ -324,6 +324,10 @@ require("lazy").setup({
       vim.keymap.set('n', '<leader>S', builtin.lsp_dynamic_workspace_symbols, { desc = "LSP Workspace Symbols" })
       vim.keymap.set('n', '<leader>d', builtin.diagnostics, { desc = "LSP Diagnostics" })
       vim.keymap.set('n', 'gr', builtin.lsp_references, { desc = "LSP References" })
+
+      -- My custom pickers
+      local my_pickers = require('my_pickers')
+      vim.keymap.set('n', '<leader>m', my_pickers.my_simple_picker, { desc = "My Custom Picker" })
     end,
   },
 
