@@ -221,6 +221,7 @@ if (sys host).name != 'Windows' {
     $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
     $env.GOPATH = '/home/adam/.go'
     $env.GOBIN = '/home/adam/.local/bin'
+    $env.GOOGLE_CLOUD_PROJECT = 'carbon-poet-465318-v3'
 
     if not (which fnm | is-empty) {
         fnm env --json | from json | load-env
@@ -392,4 +393,15 @@ def "nugit delete branch" [branch: string] {
 
 def "nugit current-branch" [] {
   git branch --show-current | collect | into string
+}
+
+def cve-count [image: string] {
+  trivy image --format json $image e> /dev/null |
+    from json |
+    get --optional Results.Vulnerabilities |
+    where $it != null |
+    flatten |
+    get Severity |
+    uniq --count |
+    reduce -f {CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0} {|row, acc| $acc | upsert $row.value $row.count }
 }
