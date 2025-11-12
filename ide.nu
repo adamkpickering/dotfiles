@@ -25,10 +25,7 @@ def main [full_name: string, email: string] {
 	# install everything
 	print -n "Configuring git... "
 	mkdir ($paths.gitconfig | path dirname)
-	open git/.gitconfig |
-		str replace 'vim' 'hx' |
-		str join "\n" |
-		save -f $paths.gitconfig
+  cp git/.gitconfig $paths.gitconfig
 	git config --global --add user.name $full_name
 	git config --global --add user.email $email
 	print "done"
