@@ -5,7 +5,6 @@ let linux_paths = {
 	wezterm: ('~/.wezterm.lua' | path expand)
 	nushell: ('~/.config/nushell' | path expand)
 	helix: ('~/.config/helix' | path expand)
-	jj: ('~/.config/jj/config.toml' | path expand)
 }
 
 let windows_paths = {
@@ -13,7 +12,6 @@ let windows_paths = {
 	wezterm: ('~/.wezterm.lua' | path expand)
 	nushell: ('~/AppData/Roaming/nushell' | path expand)
 	helix: ('~/AppData/Roaming/helix' | path expand)
-	jj: ('~/AppData/Roaming/jj/config.toml' | path expand)
 }
 
 def main [full_name: string, email: string] {
@@ -49,15 +47,4 @@ def main [full_name: string, email: string] {
 	cp helix/config.toml ([$paths.helix, 'config.toml'] | path join)
 	cp -r helix/themes ([$paths.helix] | path join)
 	print "done"
-
-	if (which jj | length) > 0 {
-		print -n "Configuring jj... "
-		mkdir ($paths.jj | path dirname)
-		cp jj/config.toml $paths.jj
-		jj config set --user user.name $full_name
-		jj config set --user user.email $email
-		print "done"
-	} else {
-		print "Not configuring jj as it was not found"
-	}
 }
