@@ -2,8 +2,6 @@
   a = add
   b = branch
   bd = branch -D
-  c = checkout --guess --quiet
-  cb = checkout -b
   cv = commit --verbose
   d = diff
   ds = diff --staged

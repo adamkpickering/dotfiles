@@ -25,7 +25,7 @@ module completions {
     ^git remote | lines | each { |line| $line | str trim }
   }
 
-  export extern "git c" [
+  export extern "git switch" [
     branch?: string@"nu-complete git all_branches" # name of the branch to checkout
   ]
 
