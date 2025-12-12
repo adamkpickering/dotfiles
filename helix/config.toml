@@ -8,6 +8,8 @@ idle-timeout = 0
 completion-timeout = 5
 completion-replace = true
 gutters = ["diagnostics", "diff", "line-numbers", "spacer"]
+# yank to and paste from system clipboard
+default-yank-register = "+"
 
 [editor.lsp]
 display-messages = true
@@ -25,8 +27,16 @@ hidden = false
 left = ["mode", "spinner", "file-name", "file-type", "file-line-ending"]
 
 [keys.normal]
-x = "extend_to_line_bounds"
 C-i = "jump_forward" # on Windows, seems to not be default
+G = "goto_file_end"
+x = "extend_to_line_bounds"
+"0" = "extend_to_line_start"
+"^" = "extend_to_first_nonwhitespace"
+"$" = "extend_to_line_end"
 
 [keys.select]
+G = "goto_file_end"
 x = "extend_to_line_bounds"
+"0" = "extend_to_line_start"
+"^" = "extend_to_first_nonwhitespace"
+"$" = "extend_to_line_end"
