@@ -14,10 +14,19 @@ let windows_paths = {
 	helix: ('~/AppData/Roaming/helix' | path expand)
 }
 
+let darwin_paths = {
+	gitconfig: ('~/.gitconfig' | path expand)
+	wezterm: ('~/.wezterm.lua' | path expand)
+	nushell: ('~/Library/Application Support/nushell' | path expand)
+	helix: ('~/.config/helix' | path expand)
+}
+
 def main [full_name: string, email: string] {
 	# determine which set of paths to use
 	let paths = if (sys host | get name) == 'Windows' {
 		$windows_paths
+	} else if (sys host | get name) == 'Darwin' {
+		$darwin_paths
 	} else {
 		$linux_paths
 	}
