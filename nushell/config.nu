@@ -235,7 +235,7 @@ if (sys host).name != 'Windows' {
     }
 }
 
-$env.EDITOR = 'vim'
+$env.EDITOR = 'hx'
 
 # --------------------------------------------------------------------------------
 # Customize $env.config
