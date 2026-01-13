@@ -219,8 +219,8 @@ if (sys host).name != 'Windows' {
     $env.PATH = ($env.PATH | split row (char esep) | prepend '~/.rd/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '~/.local/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
-    $env.GOPATH = '/home/adam/.go'
-    $env.GOBIN = '/home/adam/.local/bin'
+    $env.GOPATH = ('~/.go' | path expand)
+    $env.GOBIN = ('~/.local/bin' | path expand)
     $env.GOOGLE_CLOUD_PROJECT = 'carbon-poet-465318-v3'
 
     if not (which fnm | is-empty) {
