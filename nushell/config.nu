@@ -262,7 +262,11 @@ def h [] {
 def --env dev [] {
   let dev_directory = ("~/dev" | path expand)
   let chosen_project = (ls $dev_directory | get name | path basename | input list --fuzzy)
-  cd ([$dev_directory, $chosen_project] | path join)
+  if $chosen_project == null {
+    cd $dev_directory
+  } else {
+    cd ([$dev_directory, $chosen_project] | path join)
+  }
 }
 
 def get-regsync-logs [job_id: string] {
