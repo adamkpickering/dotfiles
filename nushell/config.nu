@@ -441,8 +441,11 @@ def "xj new" [] {
       $workedFound = true
     }
   }
-  if $foundIndex == 0 {
+  if not $workedFound {
     error make {msg: $"failed to parse ($latestXjFilename)"}
+  }
+  if $foundIndex == 0 {
+    $foundIndex = ($latestXjFile | length) + 1
   }
 
   $latestXjFile | take $foundIndex | str join "\n" | save $todayFilename
