@@ -418,7 +418,7 @@ def "xj new" [] {
   let todayFilename = date now | format date $filenameFormat
 
   if ($xjFiles | length) == 0 {
-    "To Do\n\nWorked\n" | save $todayFilename
+    "To Do:\n\nWorked On:\n" | save $todayFilename
     return
   }
 
@@ -430,24 +430,17 @@ def "xj new" [] {
   let latestXjFilename = ($xjFiles | sort-by --reverse date | first | get name)
 
   let latestXjFile = (open $latestXjFilename --raw | lines)
-  mut foundIndex = 0
-  mut workedFound = false
+  mut untilIndex = 0
   for line in ($latestXjFile | enumerate) {
-    if $workedFound and $line.item == "" {
-      $foundIndex = $line.index
+    if $line.item == "Worked On:" {
+      $untilIndex = $line.index + 1
       break
     }
-    if $line.item == "Worked" {
-      $workedFound = true
-    }
   }
-  if not $workedFound {
-    error make {msg: $"failed to parse ($latestXjFilename)"}
-  }
-  if $foundIndex == 0 {
-    $foundIndex = ($latestXjFile | length) + 1
+  if $untilIndex == 0 {
+    $untilIndex = ($latestXjFile | length) + 1
   }
 
-  $latestXjFile | take $foundIndex | str join "\n" | save $todayFilename
+  $latestXjFile | take $untilIndex | str join "\n" | save $todayFilename
   "\n" | save --append $todayFilename
 }
