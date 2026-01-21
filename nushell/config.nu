@@ -260,12 +260,12 @@ def h [] {
 }
 
 def --env dev [] {
-  let dev_directory = ("~/dev" | path expand)
-  let chosen_project = (ls $dev_directory | get name | path basename | input list --fuzzy)
+  let projects_directory = ("~/projects" | path expand)
+  let chosen_project = (ls $projects_directory | get name | path basename | input list --fuzzy)
   if $chosen_project == null {
-    cd $dev_directory
+    cd $projects_directory
   } else {
-    cd ([$dev_directory, $chosen_project] | path join)
+    cd ([$projects_directory, $chosen_project] | path join)
   }
 }
 
