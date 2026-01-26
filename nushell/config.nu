@@ -175,10 +175,11 @@ use completions *
 def create_left_prompt [] {
   if (git rev-parse --is-inside-work-tree | complete).exit_code == 0 {
     let status_lines = (git status --short --branch | lines)
+    let max_status_line_count = 10
     mut first_part_without_newlines = ""
-    if ($status_lines | length) > 5 {
-      let more_number = (($status_lines | length) - 5)
-      $first_part_without_newlines = ($status_lines | take 5 | append $"   ($more_number) more..." | str join "\n")
+    if ($status_lines | length) > $max_status_line_count {
+      let more_number = (($status_lines | length) - $max_status_line_count)
+      $first_part_without_newlines = ($status_lines | take $max_status_line_count | append $"   ($more_number) more..." | str join "\n")
     } else {
       $first_part_without_newlines = ($status_lines | str join "\n")
     }
