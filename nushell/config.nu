@@ -216,13 +216,13 @@ $env.ENV_CONVERSIONS = {
     }
 }
 
-if (sys host).name != 'Windows' {
+if (sys host).name == 'Linux' {
     $env.PATH = ($env.PATH | split row (char esep) | prepend '~/.rd/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '~/.local/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
+
     $env.GOPATH = ('~/.go' | path expand)
     $env.GOBIN = ('~/.local/bin' | path expand)
-    $env.GOOGLE_CLOUD_PROJECT = 'carbon-poet-465318-v3'
 
     if not (which fnm | is-empty) {
         fnm env --json | from json | load-env
@@ -234,6 +234,15 @@ if (sys host).name != 'Windows' {
             }
         )
     }
+} else if (sys host).name == 'Darwin' {
+    $env.PATH = ($env.PATH | split row (char esep) | prepend '~/.rd/bin')
+    $env.PATH = ($env.PATH | split row (char esep) | append '~/.local/bin')
+    $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
+    $env.PATH = ($env.PATH | split row (char esep) | append '/opt/homebrew/')
+    $env.PATH = ($env.PATH | split row (char esep) | append '/opt/homebrew/opt/node@22/bin')
+
+    $env.GOPATH = ('~/.go' | path expand)
+    $env.GOBIN = ('~/.local/bin' | path expand)
 }
 
 $env.EDITOR = 'hx'
