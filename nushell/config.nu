@@ -172,22 +172,21 @@ use completions *
 # Set environment variables
 # --------------------------------------------------------------------------------
 
+let projects_directory = "~/projects" | path expand
+
 def create_left_prompt [] {
   if (git rev-parse --is-inside-work-tree | complete).exit_code == 0 {
-    let status_lines = (git status --short --branch | lines)
+    let status_lines = ^git status --short --branch | lines
     let max_status_line_count = 10
     mut first_part_without_newlines = ""
     if ($status_lines | length) > $max_status_line_count {
-      let more_number = (($status_lines | length) - $max_status_line_count)
+      let more_number = ($status_lines | length) - $max_status_line_count
       $first_part_without_newlines = ($status_lines | take $max_status_line_count | append $"   ($more_number) more..." | str join "\n")
     } else {
       $first_part_without_newlines = ($status_lines | str join "\n")
     }
     let first_part = $"\n($first_part_without_newlines)\n"
-    let repo_full_path = (git rev-parse --show-toplevel)
-    let repo_name =  ($repo_full_path | path basename)
-    let relative_repo_path = ($env.PWD | path relative-to $repo_full_path)
-    let repo_path = ([$repo_name $relative_repo_path] | path join)
+    let repo_path = git rev-parse --show-toplevel | path relative-to $projects_directory | path split | first
     [$first_part (ansi reset) (ansi yellow) $repo_path (ansi reset)] | str join
   } else {
     [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
@@ -269,14 +268,54 @@ def h [] {
   commandline edit --replace (history | get command | reverse | input list --fuzzy)
 }
 
-def --env dev [] {
-  let projects_directory = ("~/projects" | path expand)
-  let chosen_project = (ls $projects_directory | get name | path basename | input list --fuzzy)
-  if $chosen_project == null {
+def --env pro [] {
+  let chosen = glob --depth 5 $"($projects_directory)/**/.git" | path split | each {|it|
+    $it | drop 1 | path join | path relative-to $projects_directory
+  } | input list --fuzzy
+  if $chosen == null {
     cd $projects_directory
   } else {
-    cd ([$projects_directory, $chosen_project] | path join)
+    cd ([$projects_directory, $chosen] | path join)
   }
+}
+
+def --env "pro clone" [repo: string] {
+  cd $projects_directory
+  let clone_dir = ([$projects_directory, ($repo | path split | last), "default"] | path join)
+  mkdir $clone_dir
+  git clone $repo $clone_dir
+}
+
+def --env "pro get-repos" [] {
+  glob $"($projects_directory)/*/default" | each {|it|
+    $it | path split | drop 1 | path join | path relative-to $projects_directory
+  }
+}
+
+def --env "pro choose-repo" [] {
+  let in_git_repo = (^git rev-parse --is-inside-work-tree | complete | get exit_code) == 0
+  if $in_git_repo {
+    ^git rev-parse --show-toplevel | path relative-to /Users/adam/projects/ | path split | first
+  } else {
+    pro get-repos | input list --fuzzy
+  }
+}
+
+def --env "pro branch add" [] {
+  let chosen_repo = pro choose-repo
+  cd ([$projects_directory, $chosen_repo, "default"] | path join)
+  let branch_name = input "branch name: "
+  let worktree_dir = [$projects_directory, $chosen_repo, ...($branch_name | path split)] | path join
+  git worktree add -b $branch_name $worktree_dir
+  cd $worktree_dir
+}
+
+def --env "pro branch rm" [] {
+  let chosen_repo = pro choose-repo
+  cd ([$projects_directory, $chosen_repo, "default"] | path join)
+  let chosen_branch = ^git branch --format "%(refname:short)" | lines | input list --fuzzy
+  git worktree remove $chosen_branch
+  git branch -D $chosen_branch
 }
 
 def get-regsync-logs [job_id: string] {
