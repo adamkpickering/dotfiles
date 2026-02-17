@@ -314,6 +314,9 @@ def --env "pro branch rm" [] {
   let chosen_repo = pro choose-repo
   cd ([$projects_directory, $chosen_repo, "default"] | path join)
   let chosen_branch = ^git branch --format "%(refname:short)" | lines | input list --fuzzy
+  if $chosen_branch == null {
+    return
+  }
   git worktree remove $chosen_branch
   git branch -D $chosen_branch
 }
