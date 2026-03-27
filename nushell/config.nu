@@ -268,6 +268,21 @@ def h [] {
   commandline edit --replace (history | get command | reverse | input list --fuzzy)
 }
 
+# If path is a directory, lists it. If path is a file, cats it.
+def --env show [input_path?: string] {
+  mut path = $input_path
+  if $input_path == null {
+    $path = "."
+  }
+
+  let $type = (ls --directory $path | first | get type)
+  match $type {
+    "file" => {cat $path}
+    "dir" => {ls $path}
+    _ => {error make {msg: $"unexpected type \"($type)\""}}
+  }
+}
+
 def --env pro [] {
   let chosen = glob --depth 5 $"($projects_directory)/**/.git" | path split | each {|it|
     $it | drop 1 | path join | path relative-to $projects_directory
