@@ -311,10 +311,14 @@ def --env "pro in-git-repo" [] {
   (^git rev-parse --is-inside-work-tree | complete | get exit_code) == 0
 }
 
+def --env "pro repo-name" [] {
+  ^git rev-parse --show-toplevel | path relative-to /Users/adam/projects/ | path split | first
+}
+
 def --env "pro choose-repo" [] {
   let in_git_repo = pro in-git-repo
   if $in_git_repo {
-    ^git rev-parse --show-toplevel | path relative-to /Users/adam/projects/ | path split | first
+    pro repo-name
   } else {
     pro get-repos | input list --fuzzy
   }
@@ -341,6 +345,12 @@ def --env "pro branch rm" [] {
   }
   git worktree remove $chosen_branch
   git branch -D $chosen_branch
+}
+
+def --env "pro branch adopt" [branch_name: string] {
+  let worktree_dir = [$projects_directory, (pro repo-name), ...($branch_name | path split)] | path join
+  git worktree add --checkout $worktree_dir $branch_name
+  cd $worktree_dir
 }
 
 def get-regsync-logs [job_id: string] {
