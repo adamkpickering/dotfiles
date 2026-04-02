@@ -307,8 +307,12 @@ def --env "pro get-repos" [] {
   }
 }
 
+def --env "pro in-git-repo" [] {
+  (^git rev-parse --is-inside-work-tree | complete | get exit_code) == 0
+}
+
 def --env "pro choose-repo" [] {
-  let in_git_repo = (^git rev-parse --is-inside-work-tree | complete | get exit_code) == 0
+  let in_git_repo = pro in-git-repo
   if $in_git_repo {
     ^git rev-parse --show-toplevel | path relative-to /Users/adam/projects/ | path split | first
   } else {
@@ -318,10 +322,13 @@ def --env "pro choose-repo" [] {
 
 def --env "pro branch add" [] {
   let chosen_repo = pro choose-repo
-  cd ([$projects_directory, $chosen_repo, "default"] | path join)
+  if not (pro in-git-repo) {
+    cd ([$projects_directory, $chosen_repo, "default"] | path join)
+  }
   let branch_name = input "branch name: "
   let worktree_dir = [$projects_directory, $chosen_repo, ...($branch_name | path split)] | path join
-  git worktree add -b $branch_name $worktree_dir
+  let current_branch = git branch --show-current
+  git worktree add -b $branch_name $worktree_dir $current_branch
   cd $worktree_dir
 }
 
