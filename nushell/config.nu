@@ -268,17 +268,13 @@ def h [] {
   commandline edit --replace (history | get command | reverse | input list --fuzzy)
 }
 
-# If path is a directory, lists it. If path is a file, cats it.
-def --env show [input_path?: string] {
-  mut path = $input_path
-  if $input_path == null {
-    $path = "."
-  }
-
-  let $type = (ls --directory $path | first | get type)
+# cat <dir> -> ls <dir>
+# cat <file> -> ls <file>
+def --env cat [input_path: string] {
+  let $type = (ls --directory $input_path | first | get type)
   match $type {
-    "file" => {cat $path}
-    "dir" => {ls $path}
+    "file" => {cat $input_path}
+    "dir" => {ls $input_path}
     _ => {error make {msg: $"unexpected type \"($type)\""}}
   }
 }
