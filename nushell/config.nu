@@ -280,12 +280,15 @@ def --env cat [input_path: string] {
 }
 
 def --env pro [] {
-  let chosen = glob --depth 5 $"($projects_directory)/**/.git" | path split | each {|it|
-    $it | drop 1 | path join | path relative-to $projects_directory
-  } | input list --fuzzy
-  if $chosen == null {
-    cd $projects_directory
-  } else {
+  let chosen = glob --depth 5 $"($projects_directory)/*/default" |
+    each {|it|
+      cd $it
+      git worktree list --porcelain | lines | parse 'worktree {path}' | get path
+    } |
+    flatten |
+    path relative-to $projects_directory |
+    input list --fuzzy
+  if $chosen != null {
     cd ([$projects_directory, $chosen] | path join)
   }
 }
