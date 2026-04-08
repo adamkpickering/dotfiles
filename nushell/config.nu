@@ -353,15 +353,6 @@ def --env "pro branch adopt" [branch_name: string] {
   cd $worktree_dir
 }
 
-def get-regsync-logs [job_id: string] {
-  gh run view --repo rancher/image-mirror --log --job $job_id |
-    lines |
-    parse --regex '(\{.*\})' |
-    get capture0 |
-    each {|it| $it | try { $it | from json} catch { null } } |
-    collect
-}
-
 def git-sync [] {
   # Disallow running with staged or unstaged changes in order
   # to reduce the chances of losing work.
