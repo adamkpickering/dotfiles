@@ -271,10 +271,11 @@ def h [] {
 # cat <dir> -> ls <dir>
 # cat <file> -> ls <file>
 def --env cat [input_path: string] {
-  let $type = (ls --directory $input_path | first | get type)
+  let $expanded_path = $input_path | path expand
+  let $type = (ls --directory $expanded_path | first | get type)
   match $type {
-    "file" => {cat $input_path}
-    "dir" => {ls $input_path}
+    "file" => {^cat $expanded_path}
+    "dir" => {ls $expanded_path}
     _ => {error make {msg: $"unexpected type \"($type)\""}}
   }
 }
