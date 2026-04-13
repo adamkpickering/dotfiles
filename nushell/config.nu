@@ -343,7 +343,7 @@ def --env "pro branch rm" [] {
   if $chosen_branch == null {
     return
   }
-  git worktree remove $chosen_branch
+  git worktree remove --force $chosen_branch
   git branch -D $chosen_branch
 }
 
