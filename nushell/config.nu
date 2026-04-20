@@ -265,7 +265,10 @@ $env.config.history.isolation =  true
 alias k = kubectl
 
 def h [] {
-  commandline edit --replace (history | get command | reverse | input list --fuzzy)
+  let result = history | get command | uniq | reverse | input list --fuzzy
+  if $result != null {
+    commandline edit --replace $result
+  }
 }
 
 # cat <dir> -> ls <dir>
