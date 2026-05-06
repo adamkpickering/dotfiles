@@ -327,7 +327,7 @@ def --env "pro choose-repo" [] {
   }
 }
 
-def --env "pro branch add" [] {
+def --env "pro add" [] {
   let chosen_repo = pro choose-repo
   if not (pro in-git-repo) {
     cd ([$projects_directory, $chosen_repo, "default"] | path join)
@@ -339,7 +339,7 @@ def --env "pro branch add" [] {
   cd $worktree_dir
 }
 
-def --env "pro branch rm" [] {
+def --env "pro rm" [] {
   let chosen_repo = pro choose-repo
   cd ([$projects_directory, $chosen_repo, "default"] | path join)
   let chosen_branch = ^git branch --format "%(refname:short)" | lines | input list --fuzzy
@@ -350,7 +350,7 @@ def --env "pro branch rm" [] {
   git branch -D $chosen_branch
 }
 
-def --env "pro branch adopt" [branch_name: string] {
+def --env "pro adopt" [branch_name: string] {
   let worktree_dir = [$projects_directory, (pro repo-name), ...($branch_name | path split)] | path join
   git worktree add --checkout $worktree_dir $branch_name
   cd $worktree_dir
