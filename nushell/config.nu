@@ -524,3 +524,19 @@ def "xj new" [] {
   $latestXjFile | take $untilIndex | str join "\n" | save $todayFilename
   "\n" | save --append $todayFilename
 }
+
+def "msb-pi" [] {
+  let image = 'adamkpickering/msb:26.04-2'
+  let guestHomeDir = '/root'
+
+  let relativeToHome = pwd | path relative-to ~
+  let workDir = [$guestHomeDir, $relativeToHome] | path join
+
+  let hostAgentsDir = ['~', '.agents'] | path join | path expand
+  let guestAgentsDir = [$guestHomeDir, ".agents"] | path join
+
+  let hostsPiAgentDir = ['~', '.pi', 'agent'] | path join | path expand
+  let guestPiAgentDir = [$guestHomeDir, '.pi', 'agent'] | path join
+
+  msb run --workdir $workDir --mount-dir $"(pwd):($workDir)" --mount-dir $"($hostAgentsDir):($guestAgentsDir)" --mount-dir $"($hostsPiAgentDir):($guestPiAgentDir)" --secret 'OPENROUTER_API_KEY@openrouter.ai' $image
+}
