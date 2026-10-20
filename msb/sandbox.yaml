@@ -1,0 +1,8 @@
+# sandbox.yaml
+image: "adamkpickering/msb:26.04-2"
+workdir: "/root"
+mounts:
+  - "/home/adam/projects:/root/projects"
+secrets:
+  OPENROUTER_API_KEY:
+    allow: ["openrouter.ai"]

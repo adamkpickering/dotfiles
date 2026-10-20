@@ -246,6 +246,8 @@ if (sys host).name == 'Linux' {
 
 $env.EDITOR = 'hx'
 
+source-env ($nu.config-path | path dirname | path join "secrets.nu")
+
 # --------------------------------------------------------------------------------
 # Customize $env.config
 # --------------------------------------------------------------------------------
