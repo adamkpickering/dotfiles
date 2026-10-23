@@ -175,7 +175,9 @@ use completions *
 let projects_directory = "~/projects" | path expand
 
 def create_left_prompt [] {
-  if (git rev-parse --is-inside-work-tree | complete).exit_code == 0 {
+  if (git rev-parse --is-inside-work-tree | complete).exit_code != 0 or (git rev-parse --show-toplevel) !~ $"^($projects_directory)" {
+    [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
+  } else {
     let status_lines = ^git status --short --branch | lines
     let max_status_line_count = 10
     mut first_part_without_newlines = ""
@@ -188,8 +190,6 @@ def create_left_prompt [] {
     let first_part = $"\n($first_part_without_newlines)\n"
     let repo_path = git rev-parse --show-toplevel | path relative-to $projects_directory | path split | first
     [$first_part (ansi reset) (ansi yellow) $repo_path (ansi reset)] | str join
-  } else {
-    [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
   }
 }
 
