@@ -175,21 +175,28 @@ use completions *
 let projects_directory = "~/projects" | path expand
 
 def create_left_prompt [] {
-  if (git rev-parse --is-inside-work-tree | complete).exit_code != 0 or (git rev-parse --show-toplevel) !~ $"^($projects_directory)" {
-    [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
-  } else {
+  let get_status_part = {
     let status_lines = ^git status --short --branch | lines
     let max_status_line_count = 10
-    mut first_part_without_newlines = ""
+    mut status_part_without_newlines = ""
     if ($status_lines | length) > $max_status_line_count {
       let more_number = ($status_lines | length) - $max_status_line_count
-      $first_part_without_newlines = ($status_lines | take $max_status_line_count | append $"   ($more_number) more..." | str join "\n")
+      $status_part_without_newlines = ($status_lines | take $max_status_line_count | append $"   ($more_number) more..." | str join "\n")
     } else {
-      $first_part_without_newlines = ($status_lines | str join "\n")
+      $status_part_without_newlines = ($status_lines | str join "\n")
     }
-    let first_part = $"\n($first_part_without_newlines)\n"
+    $"\n($status_part_without_newlines)\n"
+  }
+
+  if (git rev-parse --is-inside-work-tree | complete).exit_code != 0 {
+    [(ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
+  } else if (git rev-parse --show-toplevel) !~ $"^($projects_directory)" {
+    let status_part = do $get_status_part
+    [$status_part (ansi reset) (ansi yellow) $env.PWD (ansi reset)] | str join
+  } else {
+    let status_part = do $get_status_part
     let repo_path = git rev-parse --show-toplevel | path relative-to $projects_directory | path split | first
-    [$first_part (ansi reset) (ansi yellow) $repo_path (ansi reset)] | str join
+    [$status_part (ansi reset) (ansi yellow) $repo_path (ansi reset)] | str join
   }
 }
 
