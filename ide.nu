@@ -46,7 +46,11 @@ def main [full_name: string, email: string] {
 	print -n "Configuring nushell... "
 	mkdir $paths.nushell
 	cp nushell/config.nu ([$paths.nushell, 'config.nu'] | path join)
-	cp --no-clobber nushell/config.nu ([$paths.nushell, 'secrets.nu'] | path join)
+	let secrets_path = [$paths.nushell, 'secrets.nu'] | path join
+	cp --no-clobber nushell/config.nu $secrets_path
+	if (sys host | get name) != 'Windows' {
+		chmod 600 $secrets_path
+	}
 	print "done"
 
 	print -n "Configuring helix... "
