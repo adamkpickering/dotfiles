@@ -56,6 +56,7 @@ def main [full_name: string, email: string] {
 	print -n "Configuring helix... "
 	mkdir ([$paths.helix, 'themes'] | path join)
 	cp helix/config.toml ([$paths.helix, 'config.toml'] | path join)
+	cp helix/languages.toml ([$paths.helix, 'languages.toml'] | path join)
 	cp -r helix/themes ([$paths.helix] | path join)
 	print "done"
 }
