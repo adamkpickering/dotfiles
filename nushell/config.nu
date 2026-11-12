@@ -222,7 +222,7 @@ $env.ENV_CONVERSIONS = {
     }
 }
 
-if (sys host).name == 'Linux' {
+if (sys host).name =~ 'Linux' {
     $env.PATH = ($env.PATH | split row (char esep) | prepend '~/.rd/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '~/.local/bin')
     $env.PATH = ($env.PATH | split row (char esep) | append '/usr/local/go/bin')
