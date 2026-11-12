@@ -497,41 +497,6 @@ def cve-count [image: string] {
     reduce -f {CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0} {|row, acc| $acc | upsert $row.value $row.count }
 }
 
-def xj [] {}
-
-def "xj new" [] {
-    let xjFiles = (ls | where name =~ '\.xj$')
-  let filenameFormat = "%Y-%m-%d.xj"
-  let todayFilename = date now | format date $filenameFormat
-
-  if ($xjFiles | length) == 0 {
-    "To Do:\n\nWorked On:\n" | save $todayFilename
-    return
-  }
-
-  if $todayFilename in ($xjFiles | get name) {
-    error make {msg: "there is already an entry for today"}
-  }
-
-  let xjFiles = ($xjFiles | insert date {|it| $it.name | into datetime --format $filenameFormat})
-  let latestXjFilename = ($xjFiles | sort-by --reverse date | first | get name)
-
-  let latestXjFile = (open $latestXjFilename --raw | lines)
-  mut untilIndex = 0
-  for line in ($latestXjFile | enumerate) {
-    if $line.item == "Worked On:" {
-      $untilIndex = $line.index + 1
-      break
-    }
-  }
-  if $untilIndex == 0 {
-    $untilIndex = ($latestXjFile | length) + 1
-  }
-
-  $latestXjFile | take $untilIndex | str join "\n" | save $todayFilename
-  "\n" | save --append $todayFilename
-}
-
 def "msb-pi" [] {
   let image = 'adamkpickering/msb:26.04-2'
   let guestHomeDir = '/root'
