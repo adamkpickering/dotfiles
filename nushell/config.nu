@@ -497,6 +497,226 @@ def cve-count [image: string] {
     reduce -f {CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0} {|row, acc| $acc | upsert $row.value $row.count }
 }
 
+# dotfiles manages this repository's configuration.
+def "dotfiles" [] {}
+
+# Absolute paths where each part of the configuration is installed.
+def "dotfiles paths" [] {
+  let linux_paths = {
+    gitconfig: ('~/.config/git/config' | path expand)
+    wezterm: ('~/.wezterm.lua' | path expand)
+    nushell: ('~/.config/nushell' | path expand)
+    helix: ('~/.config/helix' | path expand)
+    pi: ('~/.pi/agent' | path expand)
+  }
+
+  let windows_paths = {
+    gitconfig: ('~/.gitconfig' | path expand)
+    wezterm: ('~/.wezterm.lua' | path expand)
+    nushell: ('~/AppData/Roaming/nushell' | path expand)
+    helix: ('~/AppData/Roaming/helix' | path expand)
+    pi: ('~/.pi/agent' | path expand)
+  }
+
+  let darwin_paths = {
+    gitconfig: ('~/.gitconfig' | path expand)
+    wezterm: ('~/.wezterm.lua' | path expand)
+    nushell: ('~/Library/Application Support/nushell' | path expand)
+    helix: ('~/.config/helix' | path expand)
+    pi: ('~/.pi/agent' | path expand)
+  }
+
+  let host = (sys host | get name)
+  if $host == 'Windows' {
+    $windows_paths
+  } else if $host == 'Darwin' {
+    $darwin_paths
+  } else {
+    $linux_paths
+  }
+}
+
+# Every file or directory that enforce copies.
+def "dotfiles mappings" [paths: record] {
+  # src is repo-relative, dest is absolute, kind is 'file' or 'dir', and
+  # check = false marks entries that are generated or user-owned.
+  [
+    {
+      name: 'git'
+      src: 'git/.gitconfig'
+      dest: $paths.gitconfig
+      kind: 'file'
+      check: true
+    }
+    {
+      name: 'wezterm'
+      src: 'wezterm/.wezterm.lua'
+      dest: $paths.wezterm
+      kind: 'file'
+      check: true
+    }
+    {
+      name: 'nushell'
+      src: 'nushell/config.nu'
+      dest: ([$paths.nushell, 'config.nu'] | path join)
+      kind: 'file'
+      check: true
+    }
+    {
+      name: 'nushell secrets'
+      src: 'nushell/secrets.nu'
+      dest: ([$paths.nushell, 'secrets.nu'] | path join)
+      kind: 'file'
+      check: false
+    }
+    {
+      name: 'helix'
+      src: 'helix/config.toml'
+      dest: ([$paths.helix, 'config.toml'] | path join)
+      kind: 'file'
+      check: true
+    }
+    {
+      name: 'helix languages'
+      src: 'helix/languages.toml'
+      dest: ([$paths.helix, 'languages.toml'] | path join)
+      kind: 'file'
+      check: true
+    }
+    {
+      name: 'helix themes'
+      src: 'helix/themes'
+      dest: ([$paths.helix, 'themes'] | path join)
+      kind: 'dir'
+      check: true
+    }
+    {
+      name: 'pi'
+      src: 'pi/settings.json'
+      dest: ([$paths.pi, 'settings.json'] | path join)
+      kind: 'file'
+      check: true
+    }
+    {
+      name: 'pi instructions'
+      src: 'pi/AGENTS.md'
+      dest: ([$paths.pi, 'AGENTS.md'] | path join)
+      kind: 'file'
+      check: true
+    }
+  ]
+}
+
+# Copy the repository files onto the filesystem.
+def "dotfiles enforce" [full_name: string, email: string] {
+  # Run this from the root of the dotfiles repository.
+  let paths = (dotfiles paths)
+  let plan = (dotfiles mappings $paths)
+
+  for mapping in $plan {
+    print -n $"Configuring ($mapping.name)... "
+    mkdir ($mapping.dest | path dirname)
+    if $mapping.kind == 'dir' {
+      # copying a directory into its parent keeps the repo directory name
+      cp -r $mapping.src ($mapping.dest | path dirname)
+    } else if $mapping.name == 'nushell secrets' {
+      cp --no-clobber $mapping.src $mapping.dest
+      if (sys host | get name) != 'Windows' {
+        chmod 600 $mapping.dest
+      }
+    } else {
+      cp $mapping.src $mapping.dest
+    }
+    print 'done'
+  }
+
+  print -n 'Configuring git user... '
+  git config --global --add user.name $full_name
+  git config --global --add user.email $email
+  print 'done'
+}
+
+# Absolute paths of every file under root.
+def "dotfiles files-under" [root: path] {
+  if not ($root | path exists) {
+    return []
+  }
+  mut files = []
+  for entry in (ls --all $root) {
+    if $entry.type == 'dir' {
+      $files = ($files | append (dotfiles files-under $entry.name))
+    } else if $entry.type in ['file' 'symlink'] {
+      $files = ($files | append $entry.name)
+    }
+  }
+  $files
+}
+
+# Relative paths of every file under root, sorted.
+def "dotfiles relative-files" [root: path] {
+  dotfiles files-under $root
+  | each {|file| $file | path relative-to $root | into string}
+  | sort
+}
+
+# True when two directories have the same files and contents.
+def "dotfiles dir-same" [src: path, dest: path] {
+  let a = (dotfiles relative-files $src)
+  let b = (dotfiles relative-files $dest)
+  if $a != $b {
+    return false
+  }
+  not ($a | any {|rel|
+    (open --raw ([$src, $rel] | path join)) != (open --raw ([$dest, $rel] | path join))
+  })
+}
+
+# 'same', 'differs', or 'missing' for one mapping.
+def "dotfiles state-of" [mapping: record] {
+  if not ($mapping.dest | path exists) {
+    return 'missing'
+  }
+  let same = if $mapping.kind == 'dir' {
+    dotfiles dir-same $mapping.src $mapping.dest
+  } else {
+    (open --raw $mapping.src) == (open --raw $mapping.dest)
+  }
+  if $same { 'same' } else { 'differs' }
+}
+
+# Print a colored diff of one mapping.
+def "dotfiles show-diff" [mapping: record] {
+  # complete is used because a diff with changes exits with 1, which would
+  # otherwise stop the rest of the script.
+  let result = if $mapping.kind == 'dir' {
+    ^diff -r -u --color=always $mapping.src $mapping.dest | complete
+  } else {
+    ^diff -u --color=always --label $"repo: ($mapping.src)" --label $"disk: ($mapping.dest)" $mapping.src $mapping.dest | complete
+  }
+  print -n $result.stdout
+  if not ($result.stderr | is-empty) {
+    print $result.stderr
+  }
+}
+
+# Print colored diffs for files that differ.
+def "dotfiles check" [] {
+  # Print nothing when all files match. Run this from the repository root.
+  let paths = (dotfiles paths)
+  for mapping in (dotfiles mappings $paths | where check) {
+    let state = (dotfiles state-of $mapping)
+    if $state != 'same' {
+      print $"=== ($mapping.name)"
+      if $state == 'missing' {
+        print $"disk path missing: ($mapping.dest)"
+      } else {
+        dotfiles show-diff $mapping
+      }
+      print ''
+    }
+  }
+}
+
 def "msb-pi" [] {
   let image = 'adamkpickering/msb:26.04-2'
   let guestHomeDir = '/root'
