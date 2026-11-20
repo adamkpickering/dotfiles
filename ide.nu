@@ -5,6 +5,7 @@ let linux_paths = {
 	wezterm: ('~/.wezterm.lua' | path expand)
 	nushell: ('~/.config/nushell' | path expand)
 	helix: ('~/.config/helix' | path expand)
+	pi: ('~/.pi/agent' | path expand)
 }
 
 let windows_paths = {
@@ -12,6 +13,7 @@ let windows_paths = {
 	wezterm: ('~/.wezterm.lua' | path expand)
 	nushell: ('~/AppData/Roaming/nushell' | path expand)
 	helix: ('~/AppData/Roaming/helix' | path expand)
+	pi: ('~/.pi/agent' | path expand)
 }
 
 let darwin_paths = {
@@ -19,6 +21,7 @@ let darwin_paths = {
 	wezterm: ('~/.wezterm.lua' | path expand)
 	nushell: ('~/Library/Application Support/nushell' | path expand)
 	helix: ('~/.config/helix' | path expand)
+	pi: ('~/.pi/agent' | path expand)
 }
 
 def main [full_name: string, email: string] {
@@ -58,5 +61,11 @@ def main [full_name: string, email: string] {
 	cp helix/config.toml ([$paths.helix, 'config.toml'] | path join)
 	cp helix/languages.toml ([$paths.helix, 'languages.toml'] | path join)
 	cp -r helix/themes ([$paths.helix] | path join)
+	print "done"
+
+	print -n "Configuring pi... "
+	mkdir $paths.pi
+	cp pi/settings.json ([$paths.pi, 'settings.json'] | path join)
+	cp pi/AGENTS.md ([$paths.pi, 'AGENTS.md'] | path join)
 	print "done"
 }
