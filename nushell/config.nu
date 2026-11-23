@@ -641,8 +641,21 @@ def "dotfiles check" [] {
   }
 }
 
-def "msb-pi" [] {
-  let image = 'adamkpickering/msb:26.04-2'
+let msbPiImageName = 'adamkpickering/msb-pi'
+
+# Builds OCI images for msb and loads them into msb.
+def "dotfiles build-msb" [] {
+  let msbDir = dotfiles paths | get repo | path join 'msb'
+
+  docker build --no-cache --tag $"($msbPiImageName):base" $msbDir
+  docker save $"($msbPiImageName):base" | msb load
+
+  # can add things on top
+  # docker build...
+}
+
+def "msb-pi" [tag: string = 'base'] {
+  let image = $"($msbPiImageName):($tag)"
   let guestHomeDir = '/root'
 
   let relativeToHome = pwd | path relative-to ~
@@ -654,5 +667,12 @@ def "msb-pi" [] {
   let hostsPiAgentDir = ['~', '.pi', 'agent'] | path join | path expand
   let guestPiAgentDir = [$guestHomeDir, '.pi', 'agent'] | path join
 
-  msb run --workdir $workDir --mount-dir $"(pwd):($workDir)" --mount-dir $"($hostAgentsDir):($guestAgentsDir)" --mount-dir $"($hostsPiAgentDir):($guestPiAgentDir)" --secret 'OPENROUTER_API_KEY@openrouter.ai' $image
+  (
+    msb run --workdir $workDir
+      --mount-dir $"(pwd):($workDir)"
+      --mount-dir $"($hostAgentsDir):($guestAgentsDir)"
+      --mount-dir $"($hostsPiAgentDir):($guestPiAgentDir)"
+      --secret 'OPENROUTER_API_KEY@openrouter.ai'
+      $image
+  )
 }
